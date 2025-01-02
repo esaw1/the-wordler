@@ -2,7 +2,7 @@
   "name": "frontend",
   "private": true,
   "version": "0.0.0",
-  "homepage": "https://esaw1.github.io",
+  "homepage": "https://esaw1.github.io/the-wordler/",
   "type": "module",
   "scripts": {
     "dev": "vite",
