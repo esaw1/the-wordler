@@ -12,11 +12,6 @@ function App() {
     return String.fromCharCode(65 + Math.floor(Math.random() * 26));
   };
 
-  const generateRandomLetters = () => {
-    const newLetters = Array.from({ length: count }, getRandomLetter);
-    setLetters(newLetters);
-  };
-
   useEffect(() => {
     if (count > letters.length) {
       setLetters((prevLetters) => [...prevLetters, getRandomLetter()]);
