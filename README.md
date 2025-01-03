@@ -1,2 +1,1 @@
-# <a href="http://esaw1.github.io/the-wordler/" target="_blank">link</a>
-
+# <a href="https://esaw1.github.io/the-wordler/" target="_blank"> <p style="text-align:center;"> link </p> </a>
