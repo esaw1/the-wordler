@@ -2,22 +2,23 @@ import React, {useEffect, useState} from 'react';
 import './App.css';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import Game from './game/Game.jsx';
+import fetchLetter from './utils/FetchLetter.js'
 
 function App() {
   const [count, setCount] = useState(16);
   const [letters, setLetters] = useState([]);
   const navigate = useNavigate();
 
-  const getRandomLetter = () => {
-    return String.fromCharCode(65 + Math.floor(Math.random() * 26));
-  };
-
   useEffect(() => {
-    if (count > letters.length) {
-      setLetters((prevLetters) => [...prevLetters, getRandomLetter()]);
-    } else if (count < letters.length) {
-      setLetters((prevLetters) => prevLetters.slice(0, -1));
-    }
+    const updateLetters = async () => {
+      if (count > letters.length) {
+        const newLetter = await fetchLetter(letters);
+        setLetters((prevLetters) => [...prevLetters, newLetter]);
+      } else if (count < letters.length) {
+        setLetters((prevLetters) => prevLetters.slice(0, -1));
+      }
+    };
+    updateLetters();
   }, [count, letters.length]);
 
   const handleStartClick = () => {
