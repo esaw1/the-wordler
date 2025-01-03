@@ -3,6 +3,7 @@ import './App.css';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import Game from './game/Game.jsx';
 import fetchLetter from './utils/FetchLetter.js'
+import LetterTiles from "./components/LetterTiles.jsx";
 
 function App() {
   const [count, setCount] = useState(16);
@@ -42,9 +43,9 @@ function App() {
                 className="w-52"
               />
               <output className="flex justify-center card__text text-2xl">{count}</output>
-              <h2 className="mt-8 h-3">
-                {letters.join(' ')}
-              </h2>
+              <div className="mt-8 min-h-3">
+                <LetterTiles letters={letters} />
+              </div>
             </div>
             <div>
               <button onClick={handleStartClick}>START</button>
