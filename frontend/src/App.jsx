@@ -40,13 +40,24 @@ function App() {
     }, 600);
   };
 
+  const handleTitleChange = () => {
+    setTitle(title);
+  }
+
   return (
     <Routes>
       <Route
         path="/the-wordler/"
         element={
           <div>
-            <h1 className="max-w-full font-semibold text-center mt-8">{title}</h1>
+            <div className="flex font-semibold text-center mt-8">
+              <input
+                type="text"
+                value={title}
+                onChange={handleTitleChange}
+                className="flex flex-wrap bg-inherit text-[3.2em] text-center border-b focus:outline-none"
+              />
+            </div>
             <div className="card mt-8 text-center">
               <input
                 type="range"
