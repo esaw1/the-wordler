@@ -38,25 +38,26 @@ function App() {
           refreshAnimation("tile-" + index.toString());
         }
       }
-    }
+    };
 
     document.addEventListener("keydown", handleKeyPress);
     return () => {
       document.removeEventListener("keydown", handleKeyPress);
     };
-  }, [letters]);
+  }, [letters, title]);
 
   const handleLetterClick = (letter, index) => {
     console.log(`Tile clicked: ${letter}`);
+    console.log(`Title: ${title}, Length: ${title.length}`);
+
     if (title.length < count) {
       setTitle((prevTitle) => prevTitle.concat(letter));
+      setLetters((prevLetters) => {
+        const newLetters = [...prevLetters];
+        newLetters[index] = fetchLetter();
+        return newLetters;
+      });
     }
-
-    setLetters((prevLetters) => {
-      const newLetters = [...prevLetters];
-      newLetters[index] = fetchLetter();
-      return newLetters;
-    });
   };
 
   const handleStartClick = () => {
@@ -64,8 +65,10 @@ function App() {
   };
 
   const handleBackspace = () => {
-    setTitle((prevTitle) => prevTitle.slice(0, -1))
-  }
+    console.log(`Title: ${title}, Length: ${title.length}`);
+
+    setTitle((prevTitle) => prevTitle.slice(0, -1));
+  };
 
   return (
     <Routes>
@@ -73,14 +76,12 @@ function App() {
         path="/the-wordler/"
         element={
           <div>
-            <div className="flex font-semibold justify-center mt-8">
-              <h1
-                className="min-w-[8em] bg-inherit text-[3.2em] text-center border-b focus:outline-none"
-                style={{ width: `${title.length + 0.5}em` }}
-              >
-                {title}
-              </h1>
-            </div>
+            <h1 className="flex shrink text-center justify-center font-semibold max-w-fit mt-8 min-w-[8em] bg-inherit text-[3.2em] border-b"
+                style={{
+                  width: `${100}vw`,
+                }}>
+              {title}
+            </h1>
             <div className="card mt-8 text-center">
               <input
                 type="range"
