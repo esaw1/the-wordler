@@ -76,9 +76,9 @@ function App() {
         path="/the-wordler/"
         element={
           <div>
-            <h1 className="flex shrink text-center justify-center font-semibold max-w-fit mt-8 min-w-[8em] bg-inherit text-[3.2em] border-b"
+            <h1 className="flex text-center justify-center font-semibold max-w-full mt-8 min-w-[8em] bg-inherit text-[3.2em] border-b"
                 style={{
-                  width: `${100}vw`,
+                  width: `${title.length * 0.8}em`, // Adjust width based on title length
                 }}>
               {title}
             </h1>
