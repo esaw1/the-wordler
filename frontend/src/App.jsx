@@ -2,7 +2,8 @@ import React, {useEffect, useState} from 'react';
 import './App.css';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import Game from './game/Game.jsx';
-import fetchLetter from './utils/FetchLetter.jsx'
+import fetchLetter from './utils/fetchLetter.jsx'
+import refreshAnimation from './utils/refreshAnimation.jsx'
 
 function App() {
   const [title, setTitle] = useState("THE WORDLER")
@@ -50,7 +51,11 @@ function App() {
   };
 
   const handleTitleChange = (e) => {
-    setTitle(e.target.value);
+    setTitle(e.target.value.toUpperCase());
+  }
+
+  const handleBackspace = () => {
+    setTitle(title.slice(0,-1));
   }
 
   return (
@@ -65,7 +70,7 @@ function App() {
                 value={title}
                 onChange={handleTitleChange}
                 className="min-w-[8em] bg-inherit text-[3.2em] text-center border-b focus:outline-none"
-                style={{ width: `${title.length + 1}em` }}
+                style={{ width: `${title.length + 0.5}em` }}
               />
             </div>
             <div className="card mt-8 text-center">
@@ -83,25 +88,30 @@ function App() {
 
             <div className="flex flex-col items-center justify-center">
               <div
-                className="flex flex-wrap max-w-[220px] justify-center gap-2"
-              >
+                className="relative flex flex-wrap max-w-[220px] justify-center gap-2">
                 {letters.map((letter, index) => (
                   <div
                     key={index}
                     id={"tile-" + index.toString()}
-                    className="h-12 w-12 flex items-center justify-center border border-white bg-gray-800 text-white text-lg rounded-sm cursor-pointer
-                               hover:bg-gray-600 transition flashing"
+                    className="tile flashing"
                     onClick={() => {
                       handleLetterClick(letter, index);
-                      const el = document.getElementById("tile-" + index.toString());
-                      el.style.animation = 'none';
-                      el.offsetHeight;
-                      el.style.animation = null;
+                      refreshAnimation("tile-" + index.toString());
                     }}
                   >
                     {letter}
                   </div>
                 ))}
+                <div
+                  id="backspace"
+                  className="tile flashing absolute top-0 -right-16"
+                  onClick={() => {
+                    handleBackspace();
+                    refreshAnimation("backspace");
+                  }}
+                >
+                  <span>&#8629;</span>
+                </div>
               </div>
               <button className="mt-4" onClick={handleStartClick}>
                 START
