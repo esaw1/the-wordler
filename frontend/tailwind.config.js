@@ -6,6 +6,12 @@ export default {
   ],
   theme: {
     extend: {},
+    theme: {
+      colors: {
+        transparent: 'transparent',
+        current: 'currentColor',
+      }
+    }
   },
   plugins: [],
 }
