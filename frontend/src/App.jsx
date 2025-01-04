@@ -10,9 +10,6 @@ function App() {
   const [count, setCount] = useState(16);
   const [letters, setLetters] = useState([]);
 
-  const [clickedIndices, setClickedIndices] = useState([]);
-  const [timeouts, setTimeouts] = useState([]);
-
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -24,14 +21,35 @@ function App() {
     }
 
     if (title.length > count) {
-      setTitle(title.slice(0, count));
+      setTitle((prevTitle) => prevTitle.slice(0, count));
     }
   }, [count, letters.length]);
+
+  useEffect(() => {
+    const handleKeyPress = (e) => {
+      const pressedKey = e.key.toUpperCase();
+      if (e.key === "Backspace") {
+        handleBackspace();
+        refreshAnimation("backspace");
+      } else {
+        const index = letters.indexOf(pressedKey);
+        if (index !== -1) {
+          handleLetterClick(letters[index], index);
+          refreshAnimation("tile-" + index.toString());
+        }
+      }
+    }
+
+    document.addEventListener("keydown", handleKeyPress);
+    return () => {
+      document.removeEventListener("keydown", handleKeyPress);
+    };
+  }, [letters]);
 
   const handleLetterClick = (letter, index) => {
     console.log(`Tile clicked: ${letter}`);
     if (title.length < count) {
-      setTitle(title.concat(letter));
+      setTitle((prevTitle) => prevTitle.concat(letter));
     }
 
     setLetters((prevLetters) => {
@@ -39,23 +57,14 @@ function App() {
       newLetters[index] = fetchLetter();
       return newLetters;
     });
-
-    setClickedIndices((clicked) => [...clicked, index]);
-    setTimeout(() => {
-      setClickedIndices((clicked) => clicked.filter((i) => i !== index));
-    }, 600);
   };
 
   const handleStartClick = () => {
     navigate('/the-wordler/game');
   };
 
-  const handleTitleChange = (e) => {
-    setTitle(e.target.value.toUpperCase());
-  }
-
   const handleBackspace = () => {
-    setTitle(title.slice(0,-1));
+    setTitle((prevTitle) => prevTitle.slice(0, -1))
   }
 
   return (
@@ -65,13 +74,12 @@ function App() {
         element={
           <div>
             <div className="flex font-semibold justify-center mt-8">
-              <input
-                type="text"
-                value={title}
-                onChange={handleTitleChange}
+              <h1
                 className="min-w-[8em] bg-inherit text-[3.2em] text-center border-b focus:outline-none"
                 style={{ width: `${title.length + 0.5}em` }}
-              />
+              >
+                {title}
+              </h1>
             </div>
             <div className="card mt-8 text-center">
               <input
