@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import './App.css';
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import {Route, Routes} from 'react-router-dom';
 import Game from './game/Game.jsx';
 import letterUtils from './utils/LetterUtils.jsx'
 import refreshAnimation from './utils/RefreshAnimation.jsx'
 import TileSet from "./components/TileSet.jsx";
 import {
-  loadDictionary,
   dictionaryUtils,
+  loadDictionary,
   randomWord
 } from "./utils/DictionaryUtils.jsx";
 
@@ -34,9 +34,8 @@ function App() {
       setLetters((prevLetters) => prevLetters.slice(0, -1));
     }
 
-    if (title.length > count) {
-      setTitle((prevTitle) => prevTitle.slice(0, count));
-    }
+    setSelected((prevSelected) => prevSelected.filter((idx) => (idx < count)));
+    setTitle(() => selected.map((index) => letters[index]).join(''));
   }, [count, letters.length]);
 
   useEffect(() => {
@@ -49,10 +48,12 @@ function App() {
         handleEnter();
         refreshAnimation("enter");
       } else {
-        const index = letters.indexOf(pressedKey);
+        let index = letters.indexOf(pressedKey);
+        while (index !== -1 && selected.includes(index)) {
+          index = letters.indexOf(pressedKey, index + 1);
+        }
         if (index !== -1) {
           handleLetter(letters[index], index);
-          refreshAnimation("tile-" + index.toString());
         }
       }
     };
@@ -70,11 +71,10 @@ function App() {
     if (title.length < count && !selected.includes(index)) {
       refreshAnimation("tile-" + index.toString());
       setSelected((prevSelected) => {
-        const newSelected = [...prevSelected]
-        newSelected.push(index);
+        const newSelected = [...prevSelected, index]
+        setTitle(() => newSelected.map((index) => letters[index]).join(''));
         return newSelected;
       });
-      setTitle((prevTitle) => prevTitle.concat(letter));
     }
   };
 

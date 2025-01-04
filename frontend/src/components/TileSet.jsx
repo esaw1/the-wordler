@@ -19,6 +19,11 @@ const TileSet = ({ letters, selected, handleLetterClick, handleBackspace, handle
       <div
         id="backspace"
         className="tile flashing absolute top-0 -right-16"
+        ref={(el) => {
+          if (el) {
+            el.style.setProperty("--flash-end", "#2d2d2d");
+          }
+        }}
         onClick={() => {
           handleBackspace();
           refreshAnimation("backspace");
@@ -29,6 +34,11 @@ const TileSet = ({ letters, selected, handleLetterClick, handleBackspace, handle
       <div
         id="enter"
         className="tile flashing absolute bottom-0 -right-16"
+        ref={(el) => {
+          if (el) {
+            el.style.setProperty("--flash-end", "#2d2d2d");
+          }
+        }}
         onClick={() => {
           handleEnter();
           refreshAnimation("enter");
