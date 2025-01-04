@@ -78,10 +78,16 @@ function App() {
                 {letters.map((letter, index) => (
                   <div
                     key={index}
-                    className={`h-12 w-12 flex items-center justify-center border border-white bg-gray-800 text-white text-lg rounded-sm cursor-pointer 
-                                hover:bg-gray-600 transition
-                               ${clickedIndices.includes(index) ? 'flashing' : ''}`}
-                    onClick={() => handleLetterClick(letter, index)}
+                    id={index.toString()}
+                    className="h-12 w-12 flex items-center justify-center border border-white bg-gray-800 text-white text-lg rounded-sm cursor-pointer
+                               hover:bg-gray-600 transition flashing"
+                    onClick={() => {
+                      handleLetterClick(letter, index);
+                      const el = document.getElementById(index.toString());
+                      el.style.animation = 'none';
+                      el.offsetHeight;
+                      el.style.animation = null;
+                    }}
                   >
                     {letter}
                   </div>
