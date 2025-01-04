@@ -2,21 +2,20 @@ import React, {useEffect, useState} from 'react';
 import './App.css';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import Game from './game/Game.jsx';
-import fetchLetter from './utils/fetchLetter.jsx'
-import refreshAnimation from './utils/refreshAnimation.jsx'
+import letterUtils from './utils/LetterUtils.jsx'
+import refreshAnimation from './utils/RefreshAnimation.jsx'
 import TileSet from "./components/TileSet.jsx";
 import {
   loadDictionary,
   dictionaryUtils,
   randomWord
-} from "./utils/dictionaryUtils.jsx";
+} from "./utils/DictionaryUtils.jsx";
 
 function App() {
   const [title, setTitle] = useState("")
   const [count, setCount] = useState(16);
   const [letters, setLetters] = useState([]);
-
-  const navigate = useNavigate();
+  const [selected, setSelected] = useState([]);
 
   useEffect(() => {
     const startup = async () => {
@@ -29,7 +28,7 @@ function App() {
 
   useEffect(() => {
     if (count > letters.length) {
-      const newLetter = fetchLetter();
+      const newLetter = letterUtils();
       setLetters((prevLetters) => [...prevLetters, newLetter]);
     } else if (count < letters.length) {
       setLetters((prevLetters) => prevLetters.slice(0, -1));
@@ -52,7 +51,7 @@ function App() {
       } else {
         const index = letters.indexOf(pressedKey);
         if (index !== -1) {
-          handleLetterClick(letters[index], index);
+          handleLetter(letters[index], index);
           refreshAnimation("tile-" + index.toString());
         }
       }
@@ -64,36 +63,35 @@ function App() {
     };
   }, [letters, title]);
 
-  const handleLetterClick = (letter, index) => {
+  const handleLetter = (letter, index) => {
     console.log(`Tile clicked: ${letter}`);
     console.log(`Title: ${title}, Length: ${title.length}`);
 
-    if (title.length < count) {
-      setTitle((prevTitle) => prevTitle.concat(letter));
-      setLetters((prevLetters) => {
-        const newLetters = [...prevLetters];
-        newLetters[index] = fetchLetter();
-        return newLetters;
+    if (title.length < count && !selected.includes(index)) {
+      refreshAnimation("tile-" + index.toString());
+      setSelected((prevSelected) => {
+        const newSelected = [...prevSelected]
+        newSelected.push(index);
+        return newSelected;
       });
+      setTitle((prevTitle) => prevTitle.concat(letter));
     }
   };
 
   const handleBackspace = () => {
     console.log(`Title: ${title}, Length: ${title.length}`);
 
+    setSelected((prevSelected) => prevSelected.slice(0,-1));
     setTitle((prevTitle) => prevTitle.slice(0, -1));
   };
 
   const handleEnter = () => {
     console.log(`Title: ${title}, Length: ${title.length}`);
+    setSelected([]);
 
     if (dictionaryUtils(title)) {
       console.log(`hi`);
     }
-  };
-
-  const handleStartClick = () => {
-    navigate('/the-wordler/game');
   };
 
   return (
@@ -102,7 +100,7 @@ function App() {
         path="/the-wordler/"
         element={
           <div>
-            <h1 className="justify-center text-center min-h-[4.5vw] font-semibold bg-inherit text-[4.5vw] border-b">
+            <h1 className="justify-center text-center min-h-[5vw] font-semibold bg-inherit text-[4.5vw] border-b">
               {title}
             </h1>
             <div className="card text-center">
@@ -121,11 +119,12 @@ function App() {
             <div className="items-center justify-items-center">
               <TileSet
                 letters={letters}
-                handleLetterClick={handleLetterClick}
+                selected={selected}
+                handleLetterClick={handleLetter}
                 handleBackspace={handleBackspace}
                 handleEnter={handleEnter}
               />
-              <button className="mt-4" onClick={handleStartClick}>
+              <button className="mt-4">
                 START
               </button>
             </div>

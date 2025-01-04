@@ -1,17 +1,16 @@
 import React from 'react';
-import refreshAnimation from '../utils/refreshAnimation.jsx';
+import refreshAnimation from '../utils/RefreshAnimation.jsx';
 
-const TileSet = ({ letters, handleLetterClick, handleBackspace, handleEnter }) => {
+const TileSet = ({ letters, selected, handleLetterClick, handleBackspace, handleEnter }) => {
   return (
     <div className="relative flex flex-wrap max-w-[220px] justify-center gap-2">
       {letters.map((letter, index) => (
         <div
           key={index}
           id={"tile-" + index.toString()}
-          className="tile flashing"
+          className={`tile flashing ${selected.includes(index) ? "selected" : ""}`}
           onClick={() => {
             handleLetterClick(letter, index);
-            refreshAnimation("tile-" + index.toString());
           }}
         >
           {letter}

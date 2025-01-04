@@ -1,7 +1,7 @@
-function refreshAnimation(id) {
+const refreshAnimation = (id) => {
   const el = document.getElementById(id);
   el.style.animation = 'none';
-  el.offsetHeight; // reflow
+  el.offsetHeight;
   el.style.animation = null;
 }
 
