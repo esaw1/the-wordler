@@ -21,11 +21,17 @@ function App() {
     } else if (count < letters.length) {
       setLetters((prevLetters) => prevLetters.slice(0, -1));
     }
+
+    if (title.length > count) {
+      setTitle(title.slice(0, count));
+    }
   }, [count, letters.length]);
 
   const handleLetterClick = (letter, index) => {
     console.log(`Tile clicked: ${letter}`);
-    setTitle(title.concat(letter));
+    if (title.length < count) {
+      setTitle(title.concat(letter));
+    }
 
     setLetters((prevLetters) => {
       const newLetters = [...prevLetters];
@@ -53,12 +59,13 @@ function App() {
         path="/the-wordler/"
         element={
           <div>
-            <div className="flex font-semibold text-center mt-8">
+            <div className="flex font-semibold justify-center mt-8">
               <input
                 type="text"
                 value={title}
                 onChange={handleTitleChange}
-                className="flex flex-wrap bg-inherit text-[3.2em] text-center border-b focus:outline-none"
+                className="min-w-[8em] bg-inherit text-[3.2em] text-center border-b focus:outline-none"
+                style={{ width: `${title.length + 1}em` }}
               />
             </div>
             <div className="card mt-8 text-center">
