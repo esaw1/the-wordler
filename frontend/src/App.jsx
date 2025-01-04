@@ -30,12 +30,14 @@ function App() {
     if (count > letters.length) {
       const newLetter = letterUtils();
       setLetters((prevLetters) => [...prevLetters, newLetter]);
+      setTitle(() => selected.map((index) => letters[index]).join(''));
     } else if (count < letters.length) {
       setLetters((prevLetters) => prevLetters.slice(0, -1));
+      setTitle(() => selected.map((index) => letters[index]).join(''));
     }
 
     setSelected((prevSelected) => prevSelected.filter((idx) => (idx < count)));
-    setTitle(() => selected.map((index) => letters[index]).join(''));
+
   }, [count, letters.length]);
 
   useEffect(() => {
