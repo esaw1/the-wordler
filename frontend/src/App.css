@@ -1,14 +1,12 @@
 #root {
   margin: 0;
   padding: 2rem;
-  position: absolute;
-  top: 20%;
-  left: 0;
-  right: 0;
   box-sizing: border-box;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  display: grid;
+  justify-items: center;
+  align-items: start;
+  height: 60vh;
+  width: 100vw;
 }
 
 @keyframes logo-spin {

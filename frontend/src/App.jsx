@@ -76,9 +76,9 @@ function App() {
         path="/the-wordler/"
         element={
           <div className>
-            <h1 className="flex text-center min-h-[3.8rem] justify-center font-semibold max-w-full min-w-[8em] bg-inherit text-[3.2em] border-b"
+            <h1 className="text-center min-h-[3.8rem] justify-center font-semibold max-w-full min-w-[8em] bg-inherit text-[3.2em] border-b"
                 style={{
-                  width: `${title.length * 0.8}em`, // Adjust width based on title length
+                  width: `${title.length * 0.8}em`,
                 }}>
               {title}
             </h1>
@@ -92,10 +92,10 @@ function App() {
                 className="w-52"
               />
               <output
-                className="flex justify-center card__text text-sm text-gray-400">Tile Count: {count}</output>
+                className="grid justify-center card__text text-sm text-gray-400">Tile Count: {count}</output>
             </div>
 
-            <div className="absolute left-0 right-0 flex flex-col items-center justify-items-center">
+            <div className="items-center justify-items-center">
               <div
                 className="relative flex flex-wrap max-w-[220px] justify-center gap-2">
                 {letters.map((letter, index) => (
