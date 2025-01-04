@@ -102,10 +102,7 @@ function App() {
         path="/the-wordler/"
         element={
           <div>
-            <h1 className="text-center min-h-[3.8rem] justify-center font-semibold max-w-full min-w-[8em] bg-inherit text-[3.2em] border-b"
-                style={{
-                  width: `${title.length * 0.8}em`,
-                }}>
+            <h1 className="justify-center text-center min-h-[4.5vw] font-semibold bg-inherit text-[4.5vw] border-b">
               {title}
             </h1>
             <div className="card text-center">
