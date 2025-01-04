@@ -5,7 +5,7 @@ import Game from './game/Game.jsx';
 import fetchLetter from './utils/FetchLetter.jsx'
 
 function App() {
-  const [title, setTitle] = useState("The Wordler")
+  const [title, setTitle] = useState("THE WORDLER")
   const [count, setCount] = useState(16);
   const [letters, setLetters] = useState([]);
 
@@ -43,8 +43,8 @@ function App() {
     navigate('/the-wordler/game');
   };
 
-  const handleTitleChange = () => {
-    setTitle(title);
+  const handleTitleChange = (e) => {
+    setTitle(e.target.value);
   }
 
   return (
