@@ -78,12 +78,12 @@ function App() {
                 {letters.map((letter, index) => (
                   <div
                     key={index}
-                    id={index.toString()}
+                    id={"tile-" + index.toString()}
                     className="h-12 w-12 flex items-center justify-center border border-white bg-gray-800 text-white text-lg rounded-sm cursor-pointer
                                hover:bg-gray-600 transition flashing"
                     onClick={() => {
                       handleLetterClick(letter, index);
-                      const el = document.getElementById(index.toString());
+                      const el = document.getElementById("tile-" + index.toString());
                       el.style.animation = 'none';
                       el.offsetHeight;
                       el.style.animation = null;
