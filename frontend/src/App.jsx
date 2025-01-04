@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import './App.css';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import Game from './game/Game.jsx';
-import fetchLetter from './utils/FetchLetter.js'
+import fetchLetter from './utils/FetchLetter.jsx'
 
 function App() {
   const [title, setTitle] = useState("The Wordler")
@@ -15,29 +15,32 @@ function App() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const updateLetters = async () => {
-      if (count > letters.length) {
-        const newLetter = await fetchLetter(letters);
-        setLetters((prevLetters) => [...prevLetters, newLetter]);
-      } else if (count < letters.length) {
-        setLetters((prevLetters) => prevLetters.slice(0, -1));
-      }
-    };
-    updateLetters();
+    if (count > letters.length) {
+      const newLetter = fetchLetter();
+      setLetters((prevLetters) => [...prevLetters, newLetter]);
+    } else if (count < letters.length) {
+      setLetters((prevLetters) => prevLetters.slice(0, -1));
+    }
   }, [count, letters.length]);
-
-  const handleStartClick = () => {
-    navigate('/the-wordler/game');
-  };
 
   const handleLetterClick = (letter, index) => {
     console.log(`Tile clicked: ${letter}`);
     setTitle(title.concat(letter));
 
+    setLetters((prevLetters) => {
+      const newLetters = [...prevLetters];
+      newLetters[index] = fetchLetter();
+      return newLetters;
+    });
+
     setClickedIndices((clicked) => [...clicked, index]);
     setTimeout(() => {
       setClickedIndices((clicked) => clicked.filter((i) => i !== index));
     }, 600);
+  };
+
+  const handleStartClick = () => {
+    navigate('/the-wordler/game');
   };
 
   const handleTitleChange = () => {

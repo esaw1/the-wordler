@@ -20,7 +20,7 @@ for (let i = 0; i < amountList.length; i++) {
   }
 }
 
-async function fetchLetter() {
+const fetchLetter = () => {
   return letterList[Math.floor(Math.random() * letterList.length)];
 }
 
