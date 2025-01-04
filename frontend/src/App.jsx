@@ -32,14 +32,12 @@ function App() {
 
   const handleLetterClick = (letter, index) => {
     console.log(`Tile clicked: ${letter}`);
+    setTitle(title.concat(letter));
 
-    if (clickedIndices.includes(index)) {
-      setClickedIndices((clicked) => clicked.filter((i) => i !== index));
-    }
     setClickedIndices((clicked) => [...clicked, index]);
     setTimeout(() => {
       setClickedIndices((clicked) => clicked.filter((i) => i !== index));
-    }, 1000);
+    }, 600);
   };
 
   return (
@@ -48,7 +46,7 @@ function App() {
         path="/the-wordler/"
         element={
           <div>
-            <h1 className="font-semibold text-center mt-8">The Wordler</h1>
+            <h1 className="max-w-full font-semibold text-center mt-8">{title}</h1>
             <div className="card mt-8 text-center">
               <input
                 type="range"
