@@ -1,10 +1,10 @@
 import React from 'react';
 
-const InvalidLetter = () => {
+const DamageBox = () => {
   return (
     <div className="">
     </div>
   );
 };
 
-export default InvalidLetter;
+export default DamageBox;

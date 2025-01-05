@@ -11,22 +11,26 @@ const amountList = [
 ];
 
 const generateBag = () => {
-  const letterList = [];
+  const letterBag = [];
   for (let i = 0; i < amountList.length; i++) {
     for (let j = 0; j < amountList[i].letters.length; j++) {
       for (let k = 0; k < amountList[i].amount; k++) {
-        letterList.push(amountList[i].letters[j]);
+        letterBag.push(amountList[i].letters[j]);
       }
     }
   }
-  for (let i = letterList.length - 1; i > 0; i--) {
+  for (let i = letterBag.length - 1; i > 0; i--) {
     const randomIndex = Math.floor(Math.random() * (i + 1));
-    [letterList[i], letterList[randomIndex]] = [letterList[randomIndex], letterList[i]];
+    [letterBag[i], letterBag[randomIndex]] = [letterBag[randomIndex], letterBag[i]];
   }
-  return letterList;
+  return letterBag;
 };
 
 let currentBag = generateBag();
+
+export const resetBag = () => {
+  currentBag = generateBag();
+}
 
 export const fetchLetter = () => {
   if (currentBag.length === 0.0) {

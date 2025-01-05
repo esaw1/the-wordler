@@ -1,8 +1,8 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import './App.css';
 import {Route, Routes} from 'react-router-dom';
 import Game from './game/Game.jsx';
-import { fetchLetter } from './utils/LetterUtils.jsx'
+import {fetchLetter, resetBag} from './utils/LetterUtils.jsx'
 import { flashTile } from './utils/RefreshAnimation.jsx';
 import TileSet from "./components/TileSet.jsx";
 import {
@@ -10,6 +10,7 @@ import {
   loadDictionary,
   randomWord
 } from "./utils/DictionaryUtils.jsx";
+import game from "./game/Game.jsx";
 
 function App() {
   const [title, setTitle] = useState("")
@@ -17,13 +18,50 @@ function App() {
   const [letters, setLetters] = useState([]);
   const [selected, setSelected] = useState([]);
 
+  const [gameState, setGameState] = useState(false);
+  const [health, setHealth] = useState(100);
+
+  const gameTimeRef = useRef(500);
+
+  const startGame = () => {
+    resetBag();
+    const newLetters = letters.map((letter, idx) => {
+      flashTile("tile-" + idx);
+      return fetchLetter();
+    });
+    setLetters(newLetters);
+    setSelected([]);
+    setTitle("");
+    gameTimeRef.current = 500;
+    setHealth(100);
+    setGameState(true);
+  };
+
+  useEffect(() => {
+    if (gameState && health > 0) {
+      const healthInterval = setInterval(() => {
+        gameTimeRef.current += 500
+        setHealth((prevHealth) => {
+          const decrement = 1 + (0.01 * Math.pow(gameTimeRef.current / 500, 1.1));
+          return Math.max(Math.ceil(prevHealth - decrement), 0);
+        });
+      }, 1000);
+
+      return () => {
+        clearInterval(healthInterval);
+      }
+    } else {
+      setGameState(false);
+    }
+  }, [gameState, health]);
+
   useEffect(() => {
     const startup = async () => {
       await loadDictionary();
       setTitle(randomWord().toUpperCase());
     };
 
-    startup();
+    void startup();
   }, []);
 
   useEffect(() => {
@@ -67,7 +105,10 @@ function App() {
   }, [letters, title]);
 
   const handleLetter = (letter, index) => {
-    if (title.length < count && !selected.includes(index)) {
+    if (selected.includes(index)) {
+      setSelected((prevSelected) => prevSelected.filter((idx) => idx !== index));
+      flashTile("tile-" + index.toString());
+    } else if (title.length < count) {
       flashTile("tile-" + index.toString(), undefined, '#4f46e5');
       setSelected((prevSelected) => [...prevSelected, index]);
     }
@@ -91,6 +132,9 @@ function App() {
           }
         });
       });
+
+      if (gameState) {setHealth(prevHealth => Math.min(prevHealth + title.length, 100))}
+
     } else {
       selected.forEach((idx) => flashTile("tile-" + idx, '#ef4444', '#2d2d2d'));
     }
@@ -103,24 +147,28 @@ function App() {
       <Route
         path="/the-wordler/"
         element={
-          <div>
-            <h1 className="justify-center text-center min-h-[5vw] font-semibold bg-inherit text-[4.5vw] border-b">
+          <div className="bottom-container min-w-[30vh]">
+            <h1
+              className="justify-center text-center min-h-[5vw] font-semibold bg-inherit text-[4.5vw] border-b">
               {title}
             </h1>
-            <div className="card text-center">
-              <input
-                type="range"
-                min="8"
-                max="24"
-                value={count}
-                onChange={(e) => setCount(Number(e.target.value))}
-                className="w-52"
-              />
-              <output
-                className="grid justify-center card__text text-sm text-gray-400">Tile Count: {count}</output>
-            </div>
 
-            <div className="items-center justify-items-center">
+            {!gameState && (
+              <div className="mt-8 text-center" id="countBar">
+                <input
+                  type="range"
+                  min="8"
+                  max="24"
+                  value={count}
+                  onChange={(e) => setCount(Number(e.target.value))}
+                  className="w-52"
+                />
+                <output
+                  className="grid justify-center text-sm text-gray-400">Tile
+                  Count: {count}</output>
+              </div>)}
+
+            <div className="items-center justify-items-center mt-8">
               <TileSet
                 letters={letters}
                 selected={selected}
@@ -128,10 +176,17 @@ function App() {
                 handleBackspace={handleBackspace}
                 handleEnter={handleEnter}
               />
-              <button className="mt-4">
-                START
-              </button>
+              {!gameState && (
+                <button className="mt-4" onClick={startGame}>
+                  START
+                </button>)}
             </div>
+            <div className="justify-self-center w-60 mt-8 bg-red-600">
+              <div className="health-bar"
+                   style={{width: `${health}%`}}>
+              </div>
+            </div>
+            <p>{health}</p>
           </div>
         }
       />
