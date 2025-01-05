@@ -16,8 +16,8 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  --flash-start: #fb7185;
-  --flash-end: #535bf2;
+  --flash-start: #6366f1;
+  --flash-end: #2d2d2d;
 }
 
 a {
@@ -107,5 +107,5 @@ button:focus-visible {
 }
 
 .tile.selected {
-  background-color: #535bf2;
+  background-color: #4f46e5;
 }

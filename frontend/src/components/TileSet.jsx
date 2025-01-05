@@ -1,7 +1,7 @@
 import React from 'react';
 import refreshAnimation from '../utils/RefreshAnimation.jsx';
 
-const TileSet = ({ letters, selected, handleLetterClick, handleBackspace, handleEnter }) => {
+const TileSet = ({ letters, selected, handleLetter, handleBackspace, handleEnter }) => {
   return (
     <div className="relative flex flex-wrap max-w-[220px] justify-center gap-2">
       {letters.map((letter, index) => (
@@ -9,8 +9,13 @@ const TileSet = ({ letters, selected, handleLetterClick, handleBackspace, handle
           key={index}
           id={"tile-" + index.toString()}
           className={`tile flashing ${selected.includes(index) ? "selected" : ""}`}
+          ref={(el) => {
+            if (el) {
+              el.style.setProperty("--flash-end", "#4f46e5");
+            }
+          }}
           onClick={() => {
-            handleLetterClick(letter, index);
+            handleLetter(letter, index);
           }}
         >
           {letter}
@@ -19,11 +24,6 @@ const TileSet = ({ letters, selected, handleLetterClick, handleBackspace, handle
       <div
         id="backspace"
         className="tile flashing absolute top-0 -right-16"
-        ref={(el) => {
-          if (el) {
-            el.style.setProperty("--flash-end", "#2d2d2d");
-          }
-        }}
         onClick={() => {
           handleBackspace();
           refreshAnimation("backspace");
@@ -34,11 +34,6 @@ const TileSet = ({ letters, selected, handleLetterClick, handleBackspace, handle
       <div
         id="enter"
         className="tile flashing absolute bottom-0 -right-16"
-        ref={(el) => {
-          if (el) {
-            el.style.setProperty("--flash-end", "#2d2d2d");
-          }
-        }}
         onClick={() => {
           handleEnter();
           refreshAnimation("enter");

@@ -20,8 +20,8 @@ for (let i = 0; i < amountList.length; i++) {
   }
 }
 
-const letterUtils = () => {
+const fetchLetter = () => {
   return letterList[Math.floor(Math.random() * letterList.length)];
 }
 
-export default letterUtils;
+export default fetchLetter;

@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import './App.css';
 import {Route, Routes} from 'react-router-dom';
 import Game from './game/Game.jsx';
-import letterUtils from './utils/LetterUtils.jsx'
+import fetchLetter from './utils/LetterUtils.jsx'
 import refreshAnimation from './utils/RefreshAnimation.jsx'
 import TileSet from "./components/TileSet.jsx";
 import {
@@ -28,17 +28,19 @@ function App() {
 
   useEffect(() => {
     if (count > letters.length) {
-      const newLetter = letterUtils();
+      const newLetter = fetchLetter();
       setLetters((prevLetters) => [...prevLetters, newLetter]);
-      setTitle(() => selected.map((index) => letters[index]).join(''));
     } else if (count < letters.length) {
       setLetters((prevLetters) => prevLetters.slice(0, -1));
-      setTitle(() => selected.map((index) => letters[index]).join(''));
     }
 
     setSelected((prevSelected) => prevSelected.filter((idx) => (idx < count)));
 
   }, [count, letters.length]);
+
+  useEffect(() => {
+    setTitle(() => selected.map((index) => letters[index]).join(''));
+  }, [selected, letters]);
 
   useEffect(() => {
     const handleKeyPress = (e) => {
@@ -72,11 +74,7 @@ function App() {
 
     if (title.length < count && !selected.includes(index)) {
       refreshAnimation("tile-" + index.toString());
-      setSelected((prevSelected) => {
-        const newSelected = [...prevSelected, index]
-        setTitle(() => newSelected.map((index) => letters[index]).join(''));
-        return newSelected;
-      });
+      setSelected((prevSelected) => [...prevSelected, index]);
     }
   };
 
@@ -89,11 +87,38 @@ function App() {
 
   const handleEnter = () => {
     console.log(`Title: ${title}, Length: ${title.length}`);
-    setSelected([]);
 
-    if (dictionaryUtils(title)) {
-      console.log(`hi`);
+    if (title.length >= 3 && dictionaryUtils(title)) {
+      selected.forEach((index) => {
+        const tile = document.getElementById(`tile-${index}`);
+        if (tile) {
+          tile.style.setProperty('--flash-start', '#4ade80');
+          tile.style.setProperty('--flash-end', '#2d2d2d');
+          refreshAnimation(`tile-${index}`);
+        }
+      });
+
+      setLetters((prevLetters) => {
+        return prevLetters.map((letter, index) => {
+          if (selected.includes(index)) {
+            return fetchLetter(); // Replace the letter for selected tiles
+          } else {
+            return letter;
+          }
+        });
+      });
+    } else {
+      selected.forEach((index) => {
+        const tile = document.getElementById(`tile-${index}`);
+        if (tile) {
+          tile.style.setProperty('--flash-start', '#ef4444');
+          tile.style.setProperty('--flash-end', '#2d2d2d');
+          refreshAnimation(`tile-${index}`);
+        }
+      });
     }
+
+    setSelected([]);
   };
 
   return (
@@ -122,7 +147,7 @@ function App() {
               <TileSet
                 letters={letters}
                 selected={selected}
-                handleLetterClick={handleLetter}
+                handleLetter={handleLetter}
                 handleBackspace={handleBackspace}
                 handleEnter={handleEnter}
               />
