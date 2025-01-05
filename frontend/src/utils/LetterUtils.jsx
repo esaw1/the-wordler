@@ -26,9 +26,5 @@ const consonants = [
 
 export const fetchLetter = (letters) => {
   const numVowels = letters.filter(letter => !consonants.includes(letter)).length;
-  if (numVowels > Math.ceil(letters.length / 4)) {
-    return consonants[Math.floor(Math.random() * consonants.length)];
-  } else {
-    return letterList[Math.floor(Math.random() * letterList.length)];
-  }
+  return letterList[Math.floor(Math.random() * letterList.length)];
 }
