@@ -20,8 +20,8 @@ function App() {
 
   const [gameState, setGameState] = useState(false);
   const [health, setHealth] = useState(100);
-
-  const gameTimeRef = useRef(500);
+  const [startTime, setStartTime] = useState(0);
+  const [gameResults, setGameResults] = useState({});
 
   const startGame = () => {
     resetBag();
@@ -32,7 +32,7 @@ function App() {
     setLetters(newLetters);
     setSelected([]);
     setTitle("");
-    gameTimeRef.current = 500;
+    setStartTime(performance.now());
     setHealth(100);
     setGameState(true);
   };
@@ -40,9 +40,11 @@ function App() {
   useEffect(() => {
     if (gameState && health > 0) {
       const healthInterval = setInterval(() => {
-        gameTimeRef.current += 500
         setHealth((prevHealth) => {
-          const decrement = 1 + (0.01 * Math.pow(gameTimeRef.current / 500, 1.1));
+          console.log(performance.now());
+          console.log(startTime);
+          const decrement = 1 + (0.01 * Math.pow((performance.now() - startTime) / 500, 1.1));
+
           return Math.max(Math.ceil(prevHealth - decrement), 0);
         });
       }, 1000);
@@ -87,6 +89,9 @@ function App() {
         handleBackspace();
       } else if (e.key === "Enter") {
         handleEnter();
+      } else if (e.key === "Escape") {
+        setSelected([]);
+        setGameState(false);
       } else {
         let index = letters.indexOf(pressedKey);
         while (index !== -1 && selected.includes(index)) {
