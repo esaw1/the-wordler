@@ -1,4 +1,4 @@
-// Scrabble Frequencies
+// Currently using Scrabble frequencies
 const amountList = [
   { amount: 12, letters: ['E'] },
   { amount: 9,  letters: ['A', 'I'] },
@@ -20,8 +20,15 @@ for (let i = 0; i < amountList.length; i++) {
   }
 }
 
-const fetchLetter = () => {
-  return letterList[Math.floor(Math.random() * letterList.length)];
-}
+const consonants = [
+  'B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'X', 'Y', 'Z'
+];
 
-export default fetchLetter;
+export const fetchLetter = (letters) => {
+  const numVowels = letters.filter(letter => !consonants.includes(letter)).length;
+  if (numVowels > Math.ceil(letters.length / 4)) {
+    return consonants[Math.floor(Math.random() * consonants.length)];
+  } else {
+    return letterList[Math.floor(Math.random() * letterList.length)];
+  }
+}

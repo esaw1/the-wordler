@@ -2,8 +2,8 @@ import React, {useEffect, useState} from 'react';
 import './App.css';
 import {Route, Routes} from 'react-router-dom';
 import Game from './game/Game.jsx';
-import fetchLetter from './utils/LetterUtils.jsx'
-import {flashTile, refreshAnimation} from './utils/RefreshAnimation.jsx';
+import { fetchLetter } from './utils/LetterUtils.jsx'
+import { flashTile } from './utils/RefreshAnimation.jsx';
 import TileSet from "./components/TileSet.jsx";
 import {
   dictionaryUtils,
@@ -28,7 +28,7 @@ function App() {
 
   useEffect(() => {
     if (count > letters.length) {
-      const newLetter = fetchLetter();
+      const newLetter = fetchLetter(letters);
       setLetters((prevLetters) => [...prevLetters, newLetter]);
     } else if (count < letters.length) {
       setLetters((prevLetters) => prevLetters.slice(0, -1));
@@ -85,7 +85,7 @@ function App() {
       setLetters((prevLetters) => {
         return prevLetters.map((letter, index) => {
           if (selected.includes(index)) {
-            return fetchLetter();
+            return fetchLetter(letters);
           } else {
             return letter;
           }
