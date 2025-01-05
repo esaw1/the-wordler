@@ -1,4 +1,4 @@
-// Currently using Scrabble frequencies
+// Currently using Scrabble frequencies & Tetris bag system
 const amountList = [
   { amount: 12, letters: ['E'] },
   { amount: 9,  letters: ['A', 'I'] },
@@ -10,21 +10,27 @@ const amountList = [
   { amount: 1,  letters: ['K', 'J', 'X', 'Q', 'Z'] }
 ];
 
-const letterList = [];
-
-for (let i = 0; i < amountList.length; i++) {
-  for (let j = 0; j < amountList[i].letters.length; j++) {
-    for (let k = 0; k < amountList[i].amount; k++) {
-      letterList.push(amountList[i].letters[j]);
+const generateBag = () => {
+  const letterList = [];
+  for (let i = 0; i < amountList.length; i++) {
+    for (let j = 0; j < amountList[i].letters.length; j++) {
+      for (let k = 0; k < amountList[i].amount; k++) {
+        letterList.push(amountList[i].letters[j]);
+      }
     }
   }
-}
+  for (let i = letterList.length - 1; i > 0; i--) {
+    const randomIndex = Math.floor(Math.random() * (i + 1));
+    [letterList[i], letterList[randomIndex]] = [letterList[randomIndex], letterList[i]];
+  }
+  return letterList;
+};
 
-const consonants = [
-  'B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'X', 'Y', 'Z'
-];
+let currentBag = generateBag();
 
-export const fetchLetter = (letters) => {
-  const numVowels = letters.filter(letter => !consonants.includes(letter)).length;
-  return letterList[Math.floor(Math.random() * letterList.length)];
+export const fetchLetter = () => {
+  if (currentBag.length === 0.0) {
+    currentBag = generateBag();
+  }
+  return currentBag.pop();
 }

@@ -28,7 +28,7 @@ function App() {
 
   useEffect(() => {
     if (count > letters.length) {
-      const newLetter = fetchLetter(letters);
+      const newLetter = fetchLetter();
       setLetters((prevLetters) => [...prevLetters, newLetter]);
     } else if (count < letters.length) {
       setLetters((prevLetters) => prevLetters.slice(0, -1));
@@ -85,7 +85,7 @@ function App() {
       setLetters((prevLetters) => {
         return prevLetters.map((letter, index) => {
           if (selected.includes(index)) {
-            return fetchLetter(letters);
+            return fetchLetter();
           } else {
             return letter;
           }
