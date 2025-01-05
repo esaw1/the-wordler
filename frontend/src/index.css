@@ -15,9 +15,6 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
-  --flash-start: #6366f1;
-  --flash-end: #2d2d2d;
 }
 
 a {
@@ -100,6 +97,8 @@ button:focus-visible {
   border-radius: 0.125rem;
   cursor: pointer;
   transition: background-color 0.3s;
+  --flash-start: #6366f1;
+  --flash-end: #2d2d2d;
 }
 
 .tile:hover {

@@ -3,7 +3,7 @@ import './App.css';
 import {Route, Routes} from 'react-router-dom';
 import Game from './game/Game.jsx';
 import fetchLetter from './utils/LetterUtils.jsx'
-import refreshAnimation from './utils/RefreshAnimation.jsx'
+import {flashTile, refreshAnimation} from './utils/RefreshAnimation.jsx';
 import TileSet from "./components/TileSet.jsx";
 import {
   dictionaryUtils,
@@ -40,17 +40,15 @@ function App() {
 
   useEffect(() => {
     setTitle(() => selected.map((index) => letters[index]).join(''));
-  }, [selected, letters]);
+  }, [selected]);
 
   useEffect(() => {
     const handleKeyPress = (e) => {
       const pressedKey = e.key.toUpperCase();
       if (e.key === "Backspace") {
         handleBackspace();
-        refreshAnimation("backspace");
       } else if (e.key === "Enter") {
         handleEnter();
-        refreshAnimation("enter");
       } else {
         let index = letters.indexOf(pressedKey);
         while (index !== -1 && selected.includes(index)) {
@@ -69,53 +67,32 @@ function App() {
   }, [letters, title]);
 
   const handleLetter = (letter, index) => {
-    console.log(`Tile clicked: ${letter}`);
-    console.log(`Title: ${title}, Length: ${title.length}`);
-
     if (title.length < count && !selected.includes(index)) {
-      refreshAnimation("tile-" + index.toString());
+      flashTile("tile-" + index.toString(), undefined, '#4f46e5');
       setSelected((prevSelected) => [...prevSelected, index]);
     }
   };
 
   const handleBackspace = () => {
-    console.log(`Title: ${title}, Length: ${title.length}`);
-
+    flashTile("backspace");
     setSelected((prevSelected) => prevSelected.slice(0,-1));
-    setTitle((prevTitle) => prevTitle.slice(0, -1));
   };
 
   const handleEnter = () => {
-    console.log(`Title: ${title}, Length: ${title.length}`);
-
+    flashTile("enter");
     if (title.length >= 3 && dictionaryUtils(title)) {
-      selected.forEach((index) => {
-        const tile = document.getElementById(`tile-${index}`);
-        if (tile) {
-          tile.style.setProperty('--flash-start', '#4ade80');
-          tile.style.setProperty('--flash-end', '#2d2d2d');
-          refreshAnimation(`tile-${index}`);
-        }
-      });
-
+      selected.forEach((idx) => flashTile("tile-" + idx, '#22c55e', '#2d2d2d'));
       setLetters((prevLetters) => {
         return prevLetters.map((letter, index) => {
           if (selected.includes(index)) {
-            return fetchLetter(); // Replace the letter for selected tiles
+            return fetchLetter();
           } else {
             return letter;
           }
         });
       });
     } else {
-      selected.forEach((index) => {
-        const tile = document.getElementById(`tile-${index}`);
-        if (tile) {
-          tile.style.setProperty('--flash-start', '#ef4444');
-          tile.style.setProperty('--flash-end', '#2d2d2d');
-          refreshAnimation(`tile-${index}`);
-        }
-      });
+      selected.forEach((idx) => flashTile("tile-" + idx, '#ef4444', '#2d2d2d'));
     }
 
     setSelected([]);
