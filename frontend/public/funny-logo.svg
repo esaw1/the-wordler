@@ -1,19 +1,5 @@
 <svg width="240" height="240" viewBox="0 0 240 240" fill="none" xmlns="http://www.w3.org/2000/svg">
 <rect width="240" height="240" fill="#D9D9D9"/>
-<g filter="url(#filter0_d_1_5)">
-<path d="M226.658 121.462C226.658 121.462 168.656 119.667 108.658 145.919C110.683 151.35 110.8 156.967 109.511 162.57C99.2692 207.08 0.319201 250.621 65.1581 192C78.9839 179.5 94.276 169.916 109.511 162.57C110.8 156.967 110.683 151.35 108.658 145.919C100.299 123.502 117.918 105.429 141.658 121.462L108.658 87C108.658 87 144.723 108.635 170.2 100.939C195.677 93.2432 226.658 121.462 226.658 121.462Z" fill="#D9D9D9"/>
-<path d="M44.1695 59.2523C40.927 121.334 98.4012 53.2665 126.773 15C74.376 141.344 81.9033 72.0789 13 226C81.6179 116.973 226.658 121.462 226.658 121.462C226.658 121.462 195.677 93.2432 170.2 100.939C144.723 108.635 108.658 87 108.658 87L141.658 121.462C117.918 105.429 100.299 123.502 108.658 145.919C126.773 194.5 -7.8419 258 65.1581 192C122.186 140.441 204.158 138.5 204.158 138.5" stroke="black" stroke-width="8" stroke-linecap="square" stroke-linejoin="bevel"/>
-</g>
-<defs>
-<filter id="filter0_d_1_5" x="5.34912" y="12.6177" width="228.002" height="223.513" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-<feFlood flood-opacity="0" result="BackgroundImageFix"/>
-<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
-<feOffset dy="4"/>
-<feGaussianBlur stdDeviation="2"/>
-<feComposite in2="hardAlpha" operator="out"/>
-<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
-<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_1_5"/>
-<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_1_5" result="shape"/>
-</filter>
-</defs>
+<path d="M227 123C227 123 159.772 118.778 95.0152 152.884C95.2649 150.226 95.2871 147.719 95.0607 145.398C91.753 111.494 100.473 99.3908 150.811 113.464L110.216 81.5291C166.507 110.216 167.461 91.0655 227 123Z" fill="#D9D9D9"/>
+<path d="M40.9007 54.4068C37.5821 118.108 96.4045 48.2648 125.442 9C79.9053 132.949 65.8374 88.5194 15.5 226C85.7274 114.128 227 123 227 123C167.461 91.0655 166.507 110.216 110.216 81.5291L150.811 113.464C100.473 99.3908 91.753 111.494 95.0607 145.398C97.2257 167.59 76.6578 206.843 51.7597 232C103.721 179.498 142.15 164.342 208.726 160.553" stroke="black" stroke-width="10" stroke-linecap="square" stroke-linejoin="bevel"/>
 </svg>
