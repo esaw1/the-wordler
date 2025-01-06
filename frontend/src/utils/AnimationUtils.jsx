@@ -16,6 +16,12 @@ export const flashTile = (id, startColor = '#6366f1', endColor = '#2d2d2d') => {
   }
 }
 
+const randomDirections = Array.from({ length: 200 }, () => Math.random() * 2 - 1);
+
+export const getRandomDirections = () => {
+  return randomDirections;
+}
+
 export const shakeScreen = (value) => {
   const el = document.getElementById("root");
   if (el) {
@@ -23,6 +29,7 @@ export const shakeScreen = (value) => {
 
     const totalIterations = Math.floor(5 + value / 5);
     let currentIteration = 0;
+    let index = Math.floor(Math.random() * randomDirections.length);
 
     el.style.setProperty('--shake-amount', `${totalIterations}`);
     el.style.setProperty('--shake-speed', `${Math.max(50 - value, 20)}ms`);
@@ -31,9 +38,12 @@ export const shakeScreen = (value) => {
     animationUtils("root");
 
     const updateShakeDirection = () => {
-      el.style.setProperty('--shake-dir-x', `${Math.random() * 2 - 1}`);
-      el.style.setProperty('--shake-dir-y', `${Math.random() * 2 - 1}`);
+      const dirX = randomDirections[index % randomDirections.length];
+      const dirY = randomDirections[(index + 1) % randomDirections.length];
+      el.style.setProperty('--shake-dir-x', dirX.toFixed(2));
+      el.style.setProperty('--shake-dir-y', dirY.toFixed(2));
       currentIteration++;
+      index++;
 
       if (currentIteration >= totalIterations) {
         cleanup();

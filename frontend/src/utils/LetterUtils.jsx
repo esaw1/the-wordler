@@ -1,4 +1,6 @@
 // Currently using Scrabble frequencies & Tetris bag system
+import {useRef} from "react";
+
 const amountList = [
   { amount: 12, letters: ['E'] },
   { amount: 9,  letters: ['A', 'I'] },

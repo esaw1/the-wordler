@@ -1,20 +1,18 @@
 import React, {useEffect, useRef} from 'react';
 import {getWordValue} from "../utils/LetterUtils.jsx";
+import {getRandomDirections} from "../utils/AnimationUtils.jsx";
 
 export const DamageBox = ({ word }) => {
   const value = getWordValue(word);
   const el = document.getElementById("damage-box");
-
-  const randomDirections = useRef(
-    Array.from({ length: 200 }, () => Math.random() * 2 - 1)
-  );
+  const randomDirections = getRandomDirections();
 
   useEffect(() => {
     if (el) {
       let index = 0;
       const handleAnimationIteration = () => {
-        const dirX = randomDirections.current[index % randomDirections.current.length];
-        const dirY = randomDirections.current[(index + 1) % randomDirections.current.length];
+        const dirX = randomDirections[index % randomDirections.length];
+        const dirY = randomDirections[(index + 1) % randomDirections.length];
         el.style.setProperty('--shake-dir-x', dirX.toFixed(2));
         el.style.setProperty('--shake-dir-y', dirY.toFixed(2));
         index += 2;
