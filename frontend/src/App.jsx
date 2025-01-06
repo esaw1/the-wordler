@@ -13,7 +13,8 @@ import {
 import game from "./game/Game.jsx";
 import {DamageBox} from "./components/DamageBox.jsx";
 
-const maxHealth = 727;
+const maxHealth = 200;
+const tickRate = 1000;
 
 function App() {
   const [title, setTitle] = useState("")
@@ -23,7 +24,7 @@ function App() {
 
   const [gameState, setGameState] = useState(false);
   const [health, setHealth] = useState(maxHealth);
-  const [startTime, setStartTime] = useState(0);
+  const [gameTime, setGameTime] = useState(0);
   const [gameResults, setGameResults] = useState({});
 
   const startGame = () => {
@@ -35,7 +36,7 @@ function App() {
     setLetters(newLetters);
     setSelected([]);
     setTitle("");
-    setStartTime(performance.now());
+    setGameTime(0);
     setHealth(maxHealth);
     setGameState(true);
   };
@@ -43,14 +44,12 @@ function App() {
   useEffect(() => {
     if (gameState && health > 0) {
       const healthInterval = setInterval(() => {
+        setGameTime((t) => t + tickRate);
         setHealth((prevHealth) => {
-          console.log(performance.now());
-          console.log(startTime);
-          const decrement = 5 + (0.05 * Math.pow((performance.now() - startTime) / 500, 1.1));
-
+          const decrement = 3 + Math.floor(gameTime / 30000);
           return Math.max(Math.ceil(prevHealth - decrement), 0);
         });
-      }, 1000);
+      }, tickRate);
 
       return () => {
         clearInterval(healthInterval);

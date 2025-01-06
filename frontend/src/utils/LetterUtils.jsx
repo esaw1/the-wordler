@@ -40,11 +40,23 @@ export const fetchLetter = () => {
 }
 
 const letterVals = [
+  // Bookworm weights * 4
+  /*
   { weight: 4, letters: ['A', 'D', 'E', 'G', 'I', 'L', 'N', 'O', 'R', 'S', 'T', 'U']},
   { weight: 5, letters: ['B', 'C', 'F', 'H', 'M', 'P']},
   { weight: 6, letters: ['V', 'W', 'Y']},
   { weight: 7, letters: ['J', 'K', 'Q']},
   { weight: 8, letters: ['X', 'Z']},
+   */
+
+  // Scrabble weights
+  { weight: 1, letters: ["A", "E", "I", "O", "U", "L", "N", "S", "T", "R"] },
+  { weight: 2, letters: ["D", "G"] },
+  { weight: 3, letters: ["B", "C", "M", "P"] },
+  { weight: 4, letters: ["F", "H", "V", "W", "Y"] },
+  { weight: 5, letters: ["K"] },
+  { weight: 8, letters: ["J", "X"] },
+  { weight: 10, letters: ["Q", "Z"] }
 ]
 
 export const getLetterValue = (letter) => {

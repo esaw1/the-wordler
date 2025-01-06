@@ -1,22 +1,42 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {getWordValue} from "../utils/LetterUtils.jsx";
 
 export const DamageBox = ({ word }) => {
   const value = getWordValue(word);
+  const el = document.getElementById("damage-box");
+
+  const randomDirections = useRef(
+    Array.from({ length: 222 }, () => Math.random() * 2 - 1)
+  );
 
   useEffect(() => {
-    const shakeSpeed = Math.round(10 * (5 / value)) / 10;
-    const shakeStrength = Math.round(10 * (value)) / 10;
+    if (el) {
+      let index = 0;
+      const handleAnimationIteration = () => {
+        const dirX = randomDirections.current[index % randomDirections.current.length];
+        const dirY = randomDirections.current[(index + 1) % randomDirections.current.length];
+        el.style.setProperty('--shake-dir-x', dirX.toFixed(2));
+        el.style.setProperty('--shake-dir-y', dirY.toFixed(2));
+        index += 2;
+      };
 
-    document.getElementById("damage-box").style.setProperty('--shake-speed', `${shakeSpeed}s`);
-    document.getElementById("damage-box").style.setProperty('--shake-strength', `${shakeStrength}px`);
+      el.addEventListener("animationiteration", handleAnimationIteration);
 
-    const shakeInterval = setInterval(() => {
-      document.getElementById("damage-box").style.setProperty('--shake-dir-x', `${Math.random() * 2 - 1}`);
-      document.getElementById("damage-box").style.setProperty('--shake-dir-y', `${Math.random() * 2 - 1}`);
-    }, shakeSpeed * 1000);
+      return () => {
+        el.removeEventListener("animationiteration", handleAnimationIteration);
+      };
+    }
+  }, [el]);
 
-    return () => clearInterval(shakeInterval);
+  const shakeSpeed = Math.round((1 / value) * 1000) ;
+  const shakeStrength = Math.round(22 * (value)) / 10;
+
+  useEffect(() => {
+    if (el) {
+      el.style.setProperty('--shake-speed', `${shakeSpeed}ms`);
+      el.style.setProperty('--shake-strength', `${shakeStrength}px`);
+    }
+
   }, [value]);
 
   return (
@@ -24,7 +44,7 @@ export const DamageBox = ({ word }) => {
       className="damage-box flex justify-center place-items-center shadow-sm shaking"
       id="damage-box"
       style={{
-        fontSize: `${14 + value}px`,
+        fontSize: `${14 + value * 10}px`,
         transition: "font-size 0.2s ease-out",
 
       }}
