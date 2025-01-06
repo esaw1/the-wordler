@@ -129,11 +129,10 @@ function App() {
   const handleEnter = () => {
     flashTile("enter");
     const wordValue = getWordValue(title);
-    shakeScreen(wordValue);
 
     if (title.length >= 3 && dictionaryUtils(title)) {
       selected.forEach((idx) => flashTile("tile-" + idx, '#22c55e', '#2d2d2d'));
-
+      shakeScreen(wordValue);
       setLetters((prevLetters) => {
         return prevLetters.map((letter, index) => {
           if (selected.includes(index)) {
