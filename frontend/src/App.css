@@ -2,10 +2,9 @@
   margin: 0;
   padding: 2rem;
   box-sizing: border-box;
-  display: grid;
+  min-height: 100vh;
+  min-width: 100vw;
   justify-items: center;
-  height: 100vh;
-  width: 100vw;
   animation-iteration-count: var(--shake-amount);
 
   --shake-amount: 0;
@@ -30,14 +29,8 @@
   }
 }
 
-.bottom-container {
-  position: fixed;
-  top: 30vh;
-  text-align: center;
-}
-
 .health-bar {
-  height: 10px;
+  height: 100%;
   width: 100%;
   background-color: #16a34a;
   transition: 0.5s ease;

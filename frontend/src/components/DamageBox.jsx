@@ -39,7 +39,7 @@ export const DamageBox = ({ word }) => {
 
   return (
     <div
-      className="damage-box flex justify-center place-items-center shadow-sm shaking"
+      className="damage-box flex justify-center items-center w-[20vh] aspect-square shaking"
       id="damage-box"
       style={{
         fontSize: `${Math.min(1 + value * 0.75, 25)}vh`,

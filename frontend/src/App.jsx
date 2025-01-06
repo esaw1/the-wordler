@@ -158,10 +158,10 @@ function App() {
         path="/the-wordler/"
         element={
           <>
-            <div className="flex w-60 h-60 justify-center">
+            <div>
               <DamageBox word={title}/>
             </div>
-            <div className="bottom-container min-w-[30vh]">
+            <div className="min-w-[30vh] place-content-start">
               <h1
                 className="justify-center text-center min-h-[5vw] font-semibold bg-inherit text-[4.5vw] border-b">
                 {title}
@@ -182,7 +182,7 @@ function App() {
                     Count: {count}</output>
                 </div>)}
 
-              <div className="items-center justify-items-center mt-8">
+              <div className="justify-items-center mt-8">
                 <TileSet
                   letters={letters}
                   selected={selected}
@@ -195,12 +195,12 @@ function App() {
                     START
                   </button>)}
               </div>
-              <div className="justify-self-center w-60 mt-8 bg-red-600">
+              <div className="justify-self-center w-60 mt-8 h-2.5 bg-red-600">
                 <div className="health-bar"
                      style={{width: `${100 * (health / maxHealth)}%`}}>
                 </div>
               </div>
-              <p>{health}</p>
+              <p className="text-center">{health}</p>
             </div>
           </>
         }
