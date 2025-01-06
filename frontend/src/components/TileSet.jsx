@@ -1,4 +1,5 @@
 import React from 'react';
+import {getLetterValue} from "../utils/LetterUtils.jsx";
 
 const TileSet = ({ letters, selected, handleLetter, handleBackspace, handleEnter }) => {
   return (
@@ -7,12 +8,13 @@ const TileSet = ({ letters, selected, handleLetter, handleBackspace, handleEnter
         <div
           key={index}
           id={"tile-" + index.toString()}
-          className={`tile flashing ${selected.includes(index) ? "selected" : ""}`}
+          className={`relative tile flashing ${selected.includes(index) ? "selected" : ""}`}
           onClick={() => {
             handleLetter(letter, index);
           }}
         >
           {letter}
+          <p className="tile-number text-gray-300">{getLetterValue(letter)}</p>
         </div>
       ))}
       <div

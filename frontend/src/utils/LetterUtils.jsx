@@ -38,3 +38,20 @@ export const fetchLetter = () => {
   }
   return currentBag.pop();
 }
+
+const letterVals = [
+  { weight: 4, letters: ['A', 'D', 'E', 'G', 'I', 'L', 'N', 'O', 'R', 'S', 'T', 'U']},
+  { weight: 5, letters: ['B', 'C', 'F', 'H', 'M', 'P']},
+  { weight: 6, letters: ['V', 'W', 'Y']},
+  { weight: 7, letters: ['J', 'K', 'Q']},
+  { weight: 8, letters: ['X', 'Z']},
+]
+
+export const getLetterValue = (letter) => {
+  for (const group of letterVals) {
+    if (group.letters.includes(letter)) {
+      return group.weight;
+    }
+  }
+  return -1;
+}

@@ -108,3 +108,11 @@ button:focus-visible {
 .tile.selected {
   background-color: #4f46e5;
 }
+
+.tile-number {
+  position: absolute;
+  bottom: 0;
+  right: 2px;
+  font-size: 10px;
+  font-weight: 200;
+}
