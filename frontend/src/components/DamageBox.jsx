@@ -6,7 +6,7 @@ export const DamageBox = ({ word }) => {
   const el = document.getElementById("damage-box");
 
   const randomDirections = useRef(
-    Array.from({ length: 222 }, () => Math.random() * 2 - 1)
+    Array.from({ length: 200 }, () => Math.random() * 2 - 1)
   );
 
   useEffect(() => {
@@ -28,8 +28,8 @@ export const DamageBox = ({ word }) => {
     }
   }, [el]);
 
-  const shakeSpeed = Math.round((1 / value) * 1000) ;
-  const shakeStrength = Math.round(22 * (value)) / 10;
+  const shakeSpeed = Math.round(300 - value * 2) ;
+  const shakeStrength = Math.round(8 * (value)) / 10;
 
   useEffect(() => {
     if (el) {
@@ -44,7 +44,7 @@ export const DamageBox = ({ word }) => {
       className="damage-box flex justify-center place-items-center shadow-sm shaking"
       id="damage-box"
       style={{
-        fontSize: `${14 + value * 10}px`,
+        fontSize: `${14 + value * 8}px`,
         transition: "font-size 0.2s ease-out",
 
       }}

@@ -41,15 +41,14 @@ export const fetchLetter = () => {
 
 const letterVals = [
   // Bookworm weights * 4
-  /*
-  { weight: 4, letters: ['A', 'D', 'E', 'G', 'I', 'L', 'N', 'O', 'R', 'S', 'T', 'U']},
-  { weight: 5, letters: ['B', 'C', 'F', 'H', 'M', 'P']},
-  { weight: 6, letters: ['V', 'W', 'Y']},
-  { weight: 7, letters: ['J', 'K', 'Q']},
-  { weight: 8, letters: ['X', 'Z']},
-   */
+  { weight: 1.00, letters: ['A', 'D', 'E', 'G', 'I', 'L', 'N', 'O', 'R', 'S', 'T', 'U']},
+  { weight: 1.25, letters: ['B', 'C', 'F', 'H', 'M', 'P']},
+  { weight: 1.50, letters: ['V', 'W', 'Y']},
+  { weight: 1.75, letters: ['J', 'K', 'Q']},
+  { weight: 2.00, letters: ['X', 'Z']},
 
   // Scrabble weights
+  /*
   { weight: 1, letters: ["A", "E", "I", "O", "U", "L", "N", "S", "T", "R"] },
   { weight: 2, letters: ["D", "G"] },
   { weight: 3, letters: ["B", "C", "M", "P"] },
@@ -57,9 +56,10 @@ const letterVals = [
   { weight: 5, letters: ["K"] },
   { weight: 8, letters: ["J", "X"] },
   { weight: 10, letters: ["Q", "Z"] }
+   */
 ]
 
-export const getLetterValue = (letter) => {
+export const getLetterWeight = (letter) => {
   for (const group of letterVals) {
     if (group.letters.includes(letter)) {
       return group.weight;
@@ -69,8 +69,25 @@ export const getLetterValue = (letter) => {
 }
 
 export const getWordValue = (word) => {
-  return word
+  if (word.length === 0) {
+    return 0;
+  }
+  const totalWeight = Math.floor(word
     .split('')
-    .map((c) => getLetterValue(c))
-    .reduce((a,b) => a + b, 0);
+    .map((c) => getLetterWeight(c))
+    .reduce((a,b) => a + b, 0));
+  console.log(totalWeight);
+  return Math.round((6.005e-2 * Math.pow(totalWeight, 2) + (-1.8627e-1 * totalWeight) + (3.750e-1)) * 4);
+}
+
+export const getLetterColor = (letter) => {
+  const weight = getLetterWeight(letter);
+  switch (weight) {
+    case 1.00: return '#334155'
+    case 1.25: return '#bf762e'
+    case 1.50: return '#C0C0C0'
+    case 1.75: return '#FFD700'
+    case 2.00: return '#84dfe0'
+    default: return '#334155'
+  }
 }

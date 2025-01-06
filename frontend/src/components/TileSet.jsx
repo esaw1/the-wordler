@@ -1,5 +1,5 @@
 import React from 'react';
-import {getLetterValue} from "../utils/LetterUtils.jsx";
+import { getLetterColor } from "../utils/LetterUtils.jsx";
 
 const TileSet = ({ letters, selected, handleLetter, handleBackspace, handleEnter }) => {
   return (
@@ -14,7 +14,12 @@ const TileSet = ({ letters, selected, handleLetter, handleBackspace, handleEnter
           }}
         >
           {letter}
-          <p className="tile-number text-gray-300">{getLetterValue(letter)}</p>
+          <div
+            className="tile-value"
+            style={{
+              backgroundColor: getLetterColor(letter),
+            }}
+          />
         </div>
       ))}
       <div

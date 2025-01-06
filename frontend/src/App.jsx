@@ -13,7 +13,7 @@ import {
 import game from "./game/Game.jsx";
 import {DamageBox} from "./components/DamageBox.jsx";
 
-const maxHealth = 200;
+const maxHealth = 100;
 const tickRate = 1000;
 
 function App() {
@@ -46,7 +46,7 @@ function App() {
       const healthInterval = setInterval(() => {
         setGameTime((t) => t + tickRate);
         setHealth((prevHealth) => {
-          const decrement = 3 + Math.floor(gameTime / 30000);
+          const decrement = 1 + Math.floor(gameTime / 30000);
           return Math.max(Math.ceil(prevHealth - decrement), 0);
         });
       }, tickRate);
