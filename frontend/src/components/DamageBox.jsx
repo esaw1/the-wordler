@@ -28,8 +28,8 @@ export const DamageBox = ({ word }) => {
     }
   }, [el]);
 
-  const shakeSpeed = Math.round(300 - value * 2) ;
-  const shakeStrength = Math.round(8 * (value)) / 10;
+  const shakeSpeed = Math.max(200 - value * 5, 30) ;
+  const shakeStrength = Math.round(15 * value / 10);
 
   useEffect(() => {
     if (el) {
@@ -44,7 +44,7 @@ export const DamageBox = ({ word }) => {
       className="damage-box flex justify-center place-items-center shadow-sm shaking"
       id="damage-box"
       style={{
-        fontSize: `${14 + value * 8}px`,
+        fontSize: `${Math.min(1 + value * 0.75, 25)}vh`,
         transition: "font-size 0.2s ease-out",
 
       }}
