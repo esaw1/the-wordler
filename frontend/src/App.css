@@ -6,6 +6,13 @@
   justify-items: center;
   height: 100vh;
   width: 100vw;
+  animation-iteration-count: var(--shake-amount);
+
+  --shake-amount: 0;
+  --shake-dir-x: 0;
+  --shake-dir-y: 0;
+  --shake-speed: 0ms;
+  --shake-strength: 0px;
 }
 
 @keyframes logo-spin {

@@ -76,7 +76,6 @@ export const getWordValue = (word) => {
     .split('')
     .map((c) => getLetterWeight(c))
     .reduce((a,b) => a + b, 0));
-  console.log(totalWeight);
   return Math.round((6.005e-2 * Math.pow(totalWeight, 2) + (-1.8627e-1 * totalWeight) + (3.750e-1)) * 4);
 }
 

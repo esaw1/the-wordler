@@ -3,7 +3,7 @@ import './App.css';
 import {Route, Routes} from 'react-router-dom';
 import Game from './game/Game.jsx';
 import {fetchLetter, getWordValue, resetBag} from './utils/LetterUtils.jsx'
-import { flashTile } from './utils/RefreshAnimation.jsx';
+import {flashTile, shakeScreen} from './utils/AnimationUtils.jsx';
 import TileSet from "./components/TileSet.jsx";
 import {
   dictionaryUtils,
@@ -128,8 +128,12 @@ function App() {
 
   const handleEnter = () => {
     flashTile("enter");
+    const wordValue = getWordValue(title);
+    shakeScreen(wordValue);
+
     if (title.length >= 3 && dictionaryUtils(title)) {
       selected.forEach((idx) => flashTile("tile-" + idx, '#22c55e', '#2d2d2d'));
+
       setLetters((prevLetters) => {
         return prevLetters.map((letter, index) => {
           if (selected.includes(index)) {
@@ -140,7 +144,7 @@ function App() {
         });
       });
 
-      if (gameState) {setHealth(prevHealth => Math.min(prevHealth + getWordValue(title), maxHealth))}
+      if (gameState) {setHealth(prevHealth => Math.min(prevHealth + wordValue, maxHealth))}
 
     } else {
       selected.forEach((idx) => flashTile("tile-" + idx, '#ef4444', '#2d2d2d'));

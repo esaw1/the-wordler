@@ -28,7 +28,7 @@ export const DamageBox = ({ word }) => {
     }
   }, [el]);
 
-  const shakeSpeed = Math.max(200 - value * 5, 30) ;
+  const shakeSpeed = Math.max(200 - value * 5, 30);
   const shakeStrength = Math.round(15 * value / 10);
 
   useEffect(() => {

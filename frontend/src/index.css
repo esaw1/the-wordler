@@ -147,3 +147,7 @@ button:focus-visible {
 .shaking {
   animation: shake infinite var(--shake-speed) ease-in-out;
 }
+
+.shake-screen {
+  animation: shake var(--shake-speed) ease-in-out;
+}
