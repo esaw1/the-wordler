@@ -55,3 +55,10 @@ export const getLetterValue = (letter) => {
   }
   return -1;
 }
+
+export const getWordValue = (word) => {
+  return word
+    .split('')
+    .map((c) => getLetterValue(c))
+    .reduce((a,b) => a + b, 0);
+}

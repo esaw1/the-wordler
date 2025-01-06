@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import './App.css';
 import {Route, Routes} from 'react-router-dom';
 import Game from './game/Game.jsx';
-import {fetchLetter, resetBag} from './utils/LetterUtils.jsx'
+import {fetchLetter, getWordValue, resetBag} from './utils/LetterUtils.jsx'
 import { flashTile } from './utils/RefreshAnimation.jsx';
 import TileSet from "./components/TileSet.jsx";
 import {
@@ -11,6 +11,9 @@ import {
   randomWord
 } from "./utils/DictionaryUtils.jsx";
 import game from "./game/Game.jsx";
+import {DamageBox} from "./components/DamageBox.jsx";
+
+const maxHealth = 727;
 
 function App() {
   const [title, setTitle] = useState("")
@@ -19,7 +22,7 @@ function App() {
   const [selected, setSelected] = useState([]);
 
   const [gameState, setGameState] = useState(false);
-  const [health, setHealth] = useState(100);
+  const [health, setHealth] = useState(maxHealth);
   const [startTime, setStartTime] = useState(0);
   const [gameResults, setGameResults] = useState({});
 
@@ -33,7 +36,7 @@ function App() {
     setSelected([]);
     setTitle("");
     setStartTime(performance.now());
-    setHealth(100);
+    setHealth(maxHealth);
     setGameState(true);
   };
 
@@ -43,7 +46,7 @@ function App() {
         setHealth((prevHealth) => {
           console.log(performance.now());
           console.log(startTime);
-          const decrement = 1 + (0.01 * Math.pow((performance.now() - startTime) / 500, 1.1));
+          const decrement = 5 + (0.05 * Math.pow((performance.now() - startTime) / 500, 1.1));
 
           return Math.max(Math.ceil(prevHealth - decrement), 0);
         });
@@ -138,7 +141,7 @@ function App() {
         });
       });
 
-      if (gameState) {setHealth(prevHealth => Math.min(prevHealth + title.length, 100))}
+      if (gameState) {setHealth(prevHealth => Math.min(prevHealth + getWordValue(title), maxHealth))}
 
     } else {
       selected.forEach((idx) => flashTile("tile-" + idx, '#ef4444', '#2d2d2d'));
@@ -152,47 +155,52 @@ function App() {
       <Route
         path="/the-wordler/"
         element={
-          <div className="bottom-container min-w-[30vh]">
-            <h1
-              className="justify-center text-center min-h-[5vw] font-semibold bg-inherit text-[4.5vw] border-b">
-              {title}
-            </h1>
+          <>
+            <div className="flex w-60 h-60 justify-center">
+              <DamageBox word={title}/>
+            </div>
+            <div className="bottom-container min-w-[30vh]">
+              <h1
+                className="justify-center text-center min-h-[5vw] font-semibold bg-inherit text-[4.5vw] border-b">
+                {title}
+              </h1>
 
-            {!gameState && (
-              <div className="mt-8 text-center" id="countBar">
-                <input
-                  type="range"
-                  min="8"
-                  max="24"
-                  value={count}
-                  onChange={(e) => setCount(Number(e.target.value))}
-                  className="w-52"
-                />
-                <output
-                  className="grid justify-center text-sm text-gray-400">Tile
-                  Count: {count}</output>
-              </div>)}
-
-            <div className="items-center justify-items-center mt-8">
-              <TileSet
-                letters={letters}
-                selected={selected}
-                handleLetter={handleLetter}
-                handleBackspace={handleBackspace}
-                handleEnter={handleEnter}
-              />
               {!gameState && (
-                <button className="mt-4" onClick={startGame}>
-                  START
-                </button>)}
-            </div>
-            <div className="justify-self-center w-60 mt-8 bg-red-600">
-              <div className="health-bar"
-                   style={{width: `${health}%`}}>
+                <div className="mt-8 text-center" id="countBar">
+                  <input
+                    type="range"
+                    min="8"
+                    max="24"
+                    value={count}
+                    onChange={(e) => setCount(Number(e.target.value))}
+                    className="w-52"
+                  />
+                  <output
+                    className="grid justify-center text-sm text-gray-400">Tile
+                    Count: {count}</output>
+                </div>)}
+
+              <div className="items-center justify-items-center mt-8">
+                <TileSet
+                  letters={letters}
+                  selected={selected}
+                  handleLetter={handleLetter}
+                  handleBackspace={handleBackspace}
+                  handleEnter={handleEnter}
+                />
+                {!gameState && (
+                  <button className="mt-4" onClick={startGame}>
+                    START
+                  </button>)}
               </div>
+              <div className="justify-self-center w-60 mt-8 bg-red-600">
+                <div className="health-bar"
+                     style={{width: `${100 * (health / maxHealth)}%`}}>
+                </div>
+              </div>
+              <p>{health}</p>
             </div>
-            <p>{health}</p>
-          </div>
+          </>
         }
       />
       <Route path="/the-wordler/game" element={<Game/>}/>

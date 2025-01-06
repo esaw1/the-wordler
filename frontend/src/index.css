@@ -30,6 +30,7 @@ body {
   margin: 0;
   display: flex;
   place-items: center;
+  overflow: hidden;
   min-width: 320px;
   min-height: 100vh;
 }
@@ -115,4 +116,30 @@ button:focus-visible {
   right: 2px;
   font-size: 10px;
   font-weight: 200;
+}
+
+.damage-box {
+  --shake-strength: 0px;
+  --shake-speed: 0s;
+  --shake-dir-x: 0px;
+  --shake-dir-y: 0px;
+}
+
+@keyframes shake {
+  50% {
+    transform:
+      translateX(calc(var(--shake-strength) * var(--shake-dir-x)))
+      translateY(calc(var(--shake-strength) * var(--shake-dir-y)));
+    animation-timing-function: ease;
+  }
+  100% {
+    transform:
+      translateX(calc(var(--shake-strength) * var(--shake-dir-x) * -0.5))
+      translateY(calc(var(--shake-strength) * var(--shake-dir-y) * -0.5));
+    animation-timing-function: ease;
+  }
+}
+
+.shaking {
+  animation: shake infinite var(--shake-speed) ease-in-out;
 }
