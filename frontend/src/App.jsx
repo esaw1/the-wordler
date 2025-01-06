@@ -158,7 +158,7 @@ function App() {
         path="/the-wordler/"
         element={
           <>
-            <div>
+            <div className="flex justify-center items-center w-[25vh] h-[25vh]">
               <DamageBox word={title}/>
             </div>
             <div className="min-w-[30vh] place-content-start">
