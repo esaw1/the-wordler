@@ -16,6 +16,7 @@ import {
 } from "./utils/DictionaryUtils.jsx";
 import {DamageBox} from "./components/DamageBox.jsx";
 import {HealthBar} from "./components/HealthBar.jsx";
+import {GameResults} from "./components/GameResults.jsx";
 
 const maxHealth = 50;
 const tickRate = 1000;
@@ -29,8 +30,11 @@ function App() {
   const [gameState, setGameState] = useState(false);
   const [health, setHealth] = useState(maxHealth);
   const [healthChange, setHealthChange] = useState(0);
+
+  const [showResults, setShowResults] = useState(false);
   const [gameTime, setGameTime] = useState(0);
-  const [gameResults, setGameResults] = useState({});
+  const [score, setScore] = useState(0);
+  const [wordList, setWordList] = useState([]);
 
   const startGame = () => {
     resetBag();
@@ -43,6 +47,8 @@ function App() {
     setTitle("");
     setGameTime(0);
     setGameState(true);
+    setScore(0);
+    setWordList([]);
   };
 
   useEffect(() => {
@@ -65,6 +71,7 @@ function App() {
       setGameState(() => false);
       setSelected([]);
       setHealth(maxHealth);
+      setShowResults(true);
     }
   }, [gameState, health]);
 
@@ -146,6 +153,12 @@ function App() {
     const wordValue = getWordValue(title);
 
     if (title.length >= 3 && dictionaryUtils(title)) {
+      if (gameState) {
+        setHealth(prevHealth => Math.min(prevHealth + wordValue, maxHealth));
+        setScore((n) => n + wordValue);
+        setWordList((prevWords) => [...prevWords, {word: title, value: wordValue}]);
+      }
+
       selected.forEach((idx) => flashTile("tile-" + idx, '#22c55e'));
       shakeScreen(wordValue);
       setHealthChange(wordValue + Math.random() * 0.01);
@@ -158,8 +171,6 @@ function App() {
           }
         });
       });
-
-      if (gameState) {setHealth(prevHealth => Math.min(prevHealth + wordValue, maxHealth))}
 
     } else {
       selected.forEach((idx) => flashTile("tile-" + idx, '#ef4444'));
@@ -206,9 +217,15 @@ function App() {
                   handleBackspace={handleBackspace}
                   handleEnter={handleEnter}
                 />
+              </div>
+              <div className="flex flex-grow place-self-center mt-4 gap-2">
                 {!gameState && (
-                  <button className="mt-4" onClick={startGame}>
+                  <button onClick={startGame}>
                     START
+                  </button>)}
+                {!gameState && gameTime !== 0 && (
+                  <button onClick={() => setShowResults(true)}>
+                    LAST GAME
                   </button>)}
               </div>
               <div className="justify-self-center mt-4">
@@ -220,6 +237,14 @@ function App() {
                 />
               </div>
             </div>
+            {showResults && (
+              <GameResults
+                gameTime={gameTime}
+                score={score}
+                wordList={wordList}
+                showResults={setShowResults}
+              />
+            )}
           </>
         }
       />
