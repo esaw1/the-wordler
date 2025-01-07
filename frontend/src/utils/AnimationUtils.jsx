@@ -1,6 +1,6 @@
 import {useRef} from "react";
 
-export const animationUtils = (id) => {
+export const refreshAnimation = (id) => {
   const el = document.getElementById(id);
   el.style.animation = 'none';
   el.offsetHeight;
@@ -12,7 +12,7 @@ export const flashTile = (id, startColor = '#6366f1', endColor = '#2d2d2d') => {
   if (tile) {
     tile.style.setProperty('--flash-start', startColor);
     tile.style.setProperty('--flash-end', endColor);
-    animationUtils(id);
+    refreshAnimation(id);
   }
 }
 
@@ -26,6 +26,7 @@ export const shakeScreen = (value) => {
   const el = document.getElementById("root");
   if (el) {
     el.classList.add('shake-screen');
+    el.classList.remove('flashing');
 
     const totalIterations = Math.floor(5 + value / 5);
     let currentIteration = 0;
@@ -35,7 +36,7 @@ export const shakeScreen = (value) => {
     el.style.setProperty('--shake-speed', `${Math.max(50 - value, 20)}ms`);
     el.style.setProperty('--shake-strength', `${Math.round(15 * value / 10)}px`);
 
-    animationUtils("root");
+    refreshAnimation("root");
 
     const updateShakeDirection = () => {
       const dirX = randomDirections[index % randomDirections.length];
@@ -56,5 +57,18 @@ export const shakeScreen = (value) => {
     };
 
     el.addEventListener("animationiteration", updateShakeDirection);
+  }
+};
+
+export const flashBackground = (duration = 1000) => {
+  const el = document.getElementById("root");
+  if (el) {
+    el.classList.remove('shake-screen');
+    el.classList.add('flashing');
+    refreshAnimation("root");
+
+    el.addEventListener('animationend', () => {
+      el.classList.remove('flashing');
+    });
   }
 };

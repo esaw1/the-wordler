@@ -3,7 +3,11 @@ import './App.css';
 import {Route, Routes} from 'react-router-dom';
 import Game from './game/Game.jsx';
 import {fetchLetter, getWordValue, resetBag} from './utils/LetterUtils.jsx'
-import {flashTile, shakeScreen} from './utils/AnimationUtils.jsx';
+import {
+  flashBackground,
+  flashTile,
+  shakeScreen
+} from './utils/AnimationUtils.jsx';
 import TileSet from "./components/TileSet.jsx";
 import {
   dictionaryUtils,
@@ -54,7 +58,8 @@ function App() {
       return () => {
         clearInterval(healthInterval);
       }
-    } else {
+    } else if (health <= 0) {
+      flashBackground();
       setGameState(false);
     }
   }, [gameState, health]);
@@ -92,8 +97,12 @@ function App() {
       } else if (e.key === "Enter") {
         handleEnter();
       } else if (e.key === "Escape") {
-        setSelected([]);
-        setGameState(false);
+        setGameState((prevState) => {
+          if (prevState) {
+            flashBackground();
+            return false;
+          }
+        })
       } else {
         let index = letters.indexOf(pressedKey);
         while (index !== -1 && selected.includes(index)) {
