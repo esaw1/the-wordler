@@ -10,7 +10,7 @@ export const HealthBar = ({ health, maxHealth, healthChange, tickRate }) => {
       if (!el.classList.contains("health-change-show")) {
         el.classList.add('health-change-show');
       }
-      el.style.setProperty('--move-amount', `${0.5 + Math.abs(healthChange).toFixed(3) / 5}rem`);
+      el.style.setProperty('--move-amount', `${0.5 + 0.2 * Math.abs(healthChange).toFixed(3)}rem`);
       el.style.setProperty('--scale-amount', `${0.9 + Math.abs(healthChange) / 5}`);
       el.style.setProperty('--repeat-speed', `${Math.round(0.9 * tickRate)}ms`);
       refreshAnimation("health-change");
@@ -31,11 +31,10 @@ export const HealthBar = ({ health, maxHealth, healthChange, tickRate }) => {
           className="absolute font-bold opacity-0 inset-y-0 left-[110%]"
           style={{
             color: healthChange < 0 ? "#dc2626" : "#16a34a",
-
           }}
           id="health-change"
         >
-          {healthChange.toFixed(1)}
+          {((healthChange > 0) ? '+' : '') + healthChange.toFixed(1)}
         </div>
       </div>
     </div>
