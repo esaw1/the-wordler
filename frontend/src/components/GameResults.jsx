@@ -4,7 +4,7 @@ export const GameResults = ({ gameTime, score, wordList, showResults }) => {
   return (
     <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-75 z-[1000] flex items-center justify-center">
       <div
-        className="relative p-8 border rounded-md border-gray-600 bg-gray-800 max-w-[75%]"
+        className="relative p-8 border rounded-md border-gray-600 bg-gray-800 max-w-[75%] max-h-[80%] overflow-y-auto"
         style={{
           boxShadow: '0 5px 15px rgba(0,0,0,0.3)',
         }}
@@ -31,6 +31,8 @@ export const GameResults = ({ gameTime, score, wordList, showResults }) => {
           ))}
         </ul>
       </div>
+
+
     </div>
   );
 };
