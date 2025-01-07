@@ -61,6 +61,7 @@ function App() {
     } else if (health <= 0) {
       flashBackground();
       setGameState(false);
+      setSelected([]);
     }
   }, [gameState, health]);
 
@@ -140,7 +141,7 @@ function App() {
     const wordValue = getWordValue(title);
 
     if (title.length >= 3 && dictionaryUtils(title)) {
-      selected.forEach((idx) => flashTile("tile-" + idx, '#22c55e', '#2d2d2d'));
+      selected.forEach((idx) => flashTile("tile-" + idx, '#22c55e'));
       shakeScreen(wordValue);
       setLetters((prevLetters) => {
         return prevLetters.map((letter, index) => {
@@ -155,7 +156,7 @@ function App() {
       if (gameState) {setHealth(prevHealth => Math.min(prevHealth + wordValue, maxHealth))}
 
     } else {
-      selected.forEach((idx) => flashTile("tile-" + idx, '#ef4444', '#2d2d2d'));
+      selected.forEach((idx) => flashTile("tile-" + idx, '#ef4444'));
     }
 
     setSelected([]);
