@@ -16,7 +16,7 @@ export const flashTile = (id, startColor = '#6366f1', endColor = '#2d2d2d') => {
   }
 }
 
-const randomDirections = Array.from({ length: 200 }, () => Math.random() * 2 - 1);
+const randomDirections = Array.from({ length: 100 }, () => Math.random() * 2 - 1);
 
 export const getRandomDirections = () => {
   return randomDirections;
@@ -75,3 +75,4 @@ export const flashBackground = (timeout = 300) => {
   timer = setTimeout(() => {
   }, timeout);
 };
+

@@ -15,9 +15,10 @@ import {
   randomWord
 } from "./utils/DictionaryUtils.jsx";
 import {DamageBox} from "./components/DamageBox.jsx";
+import {HealthBar} from "./components/HealthBar.jsx";
 
 const maxHealth = 50;
-const tickRate = 500;
+const tickRate = 1000;
 
 function App() {
   const [title, setTitle] = useState("")
@@ -27,6 +28,7 @@ function App() {
 
   const [gameState, setGameState] = useState(false);
   const [health, setHealth] = useState(maxHealth);
+  const [healthChange, setHealthChange] = useState(0);
   const [gameTime, setGameTime] = useState(0);
   const [gameResults, setGameResults] = useState({});
 
@@ -48,7 +50,8 @@ function App() {
       const healthInterval = setInterval(() => {
         setGameTime((t) => t + tickRate);
         setHealth((prevHealth) => {
-          const decrement = tickRate / 2000 + gameTime / 60000;
+          const decrement = Math.min(tickRate / 2000 + gameTime / 120000, tickRate / 500);
+          setHealthChange(-decrement);
           console.log(`decrement:` + decrement);
           return Math.max(prevHealth - decrement, 0);
         });
@@ -145,6 +148,7 @@ function App() {
     if (title.length >= 3 && dictionaryUtils(title)) {
       selected.forEach((idx) => flashTile("tile-" + idx, '#22c55e'));
       shakeScreen(wordValue);
+      setHealthChange(wordValue + Math.random() * 0.01);
       setLetters((prevLetters) => {
         return prevLetters.map((letter, index) => {
           if (selected.includes(index)) {
@@ -207,12 +211,14 @@ function App() {
                     START
                   </button>)}
               </div>
-              <div className="justify-self-center w-60 mt-4 h-2.5 bg-red-600">
-                <div className="health-bar"
-                     style={{width: `${100 * (health / maxHealth)}%`}}>
-                </div>
+              <div className="justify-self-center mt-4">
+                <HealthBar
+                  health={health}
+                  maxHealth={maxHealth}
+                  healthChange={healthChange}
+                  tickRate={tickRate}
+                />
               </div>
-              <p className="text-center">{health.toFixed(1)}</p>
             </div>
           </>
         }

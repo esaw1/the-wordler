@@ -28,9 +28,3 @@
   }
 }
 
-.health-bar {
-  height: 100%;
-  width: 100%;
-  background-color: #16a34a;
-  transition: 0.5s ease;
-}

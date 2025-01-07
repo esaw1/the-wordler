@@ -44,7 +44,6 @@ export const DamageBox = ({ word }) => {
       style={{
         fontSize: `${Math.min(1 + value * 0.75, 25)}vh`,
         transition: "font-size 0.2s ease-out",
-
       }}
     >
       {value}

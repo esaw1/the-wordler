@@ -153,3 +153,25 @@ button:focus-visible {
 .shake-screen {
   animation: shake var(--shake-amount) var(--shake-speed) ease-in-out;
 }
+
+@keyframes right-fade {
+  0% {
+    opacity: 0.4;
+  }
+  60% {
+    opacity: 0.8;
+    animation: ease-in;
+  }
+  100% {
+    opacity: 0;
+    scale: var(--scale-amount);
+    transform: translateX(var(--move-amount));
+  }
+}
+
+.health-change-show {
+  --move-amount: 0;
+  --scale-amount: 1;
+  --repeat-speed: 500ms;
+  animation: right-fade var(--repeat-speed) ease-out;
+}
