@@ -24,10 +24,7 @@ export const getRandomDirections = () => {
 
 export const shakeScreen = (value) => {
   const el = document.getElementById("root");
-  if (el) {
-    el.classList.add('shake-screen');
-    el.classList.remove('flashing');
-
+  if (el && !el.classList.contains("flashing")) {
     const totalIterations = Math.floor(5 + value / 5);
     let currentIteration = 0;
     let index = Math.floor(Math.random() * randomDirections.length);
@@ -37,6 +34,7 @@ export const shakeScreen = (value) => {
     el.style.setProperty('--shake-strength', `${Math.round(15 * value / 10)}px`);
 
     refreshAnimation("root");
+    el.classList.add('shake-screen');
 
     const updateShakeDirection = () => {
       const dirX = randomDirections[index % randomDirections.length];
@@ -60,10 +58,11 @@ export const shakeScreen = (value) => {
   }
 };
 
-export const flashBackground = (duration = 1000) => {
+let timer;
+
+export const flashBackground = (timeout = 300) => {
   const el = document.getElementById("root");
   if (el) {
-    el.classList.remove('shake-screen');
     el.classList.add('flashing');
     refreshAnimation("root");
 
@@ -71,4 +70,8 @@ export const flashBackground = (duration = 1000) => {
       el.classList.remove('flashing');
     });
   }
+
+  clearTimeout(timer);
+  timer = setTimeout(() => {
+  }, timeout);
 };

@@ -16,7 +16,7 @@ import {
 } from "./utils/DictionaryUtils.jsx";
 import {DamageBox} from "./components/DamageBox.jsx";
 
-const maxHealth = 100;
+const maxHealth = 50;
 const tickRate = 500;
 
 function App() {
@@ -40,7 +40,6 @@ function App() {
     setSelected([]);
     setTitle("");
     setGameTime(0);
-    setHealth(maxHealth);
     setGameState(true);
   };
 
@@ -60,8 +59,9 @@ function App() {
       }
     } else if (health <= 0) {
       flashBackground();
-      setGameState(false);
+      setGameState(() => false);
       setSelected([]);
+      setHealth(maxHealth);
     }
   }, [gameState, health]);
 
@@ -98,11 +98,13 @@ function App() {
       } else if (e.key === "Enter") {
         handleEnter();
       } else if (e.key === "Escape") {
+        setSelected([]);
         setGameState((prevState) => {
           if (prevState) {
             flashBackground();
-            return false;
+            setHealth(maxHealth);
           }
+          return false;
         })
       } else {
         let index = letters.indexOf(pressedKey);
@@ -159,7 +161,7 @@ function App() {
       selected.forEach((idx) => flashTile("tile-" + idx, '#ef4444'));
     }
 
-    setSelected([]);
+    setSelected(() =>[]);
   };
 
   return (
