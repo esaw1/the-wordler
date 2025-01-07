@@ -19,11 +19,11 @@ export const GameResults = ({ gameTime, score, wordList, showResults }) => {
         <h2 className="text-lg font-semibold text-center">GAME OVER</h2>
 
         <p>Time Elapsed: {gameTime / 1000}s</p>
-        <p>Score: {score}</p>
+        <p>Total Score: {score}</p>
 
-        <h3 className="mt-4 text-center font-semibold">WORDS ENTERED</h3>
+        <h3 className="mt-4 text-lg text-center font-semibold">WORDS ENTERED</h3>
         <ul className="mt-2 space-y-1 text-sm">
-          {wordList.map(({word, value}, index) => (
+          {wordList.sort((a, b) => b.value - a.value).map(({word, value}, index) => (
             <li key={index} className="flex justify-between">
               <span>{word}</span>
               <span className="text-gray-400">+{value}</span>
