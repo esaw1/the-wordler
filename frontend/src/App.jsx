@@ -10,11 +10,10 @@ import {
   loadDictionary,
   randomWord
 } from "./utils/DictionaryUtils.jsx";
-import game from "./game/Game.jsx";
 import {DamageBox} from "./components/DamageBox.jsx";
 
 const maxHealth = 100;
-const tickRate = 1000;
+const tickRate = 500;
 
 function App() {
   const [title, setTitle] = useState("")
@@ -46,8 +45,9 @@ function App() {
       const healthInterval = setInterval(() => {
         setGameTime((t) => t + tickRate);
         setHealth((prevHealth) => {
-          const decrement = 1 + Math.floor(gameTime / 30000);
-          return Math.max(Math.ceil(prevHealth - decrement), 0);
+          const decrement = tickRate / 2000 + gameTime / 60000;
+          console.log(`decrement:` + decrement);
+          return Math.max(prevHealth - decrement, 0);
         });
       }, tickRate);
 
@@ -81,7 +81,7 @@ function App() {
   }, [count, letters.length]);
 
   useEffect(() => {
-    setTitle(() => selected.map((index) => letters[index]).join(''));
+    setTitle(selected.map((index) => letters[index]).join(''));
   }, [selected]);
 
   useEffect(() => {
@@ -182,7 +182,7 @@ function App() {
                     Count: {count}</output>
                 </div>)}
 
-              <div className="justify-items-center mt-8">
+              <div className="justify-items-center mt-4">
                 <TileSet
                   letters={letters}
                   selected={selected}
@@ -195,12 +195,12 @@ function App() {
                     START
                   </button>)}
               </div>
-              <div className="justify-self-center w-60 mt-8 h-2.5 bg-red-600">
+              <div className="justify-self-center w-60 mt-4 h-2.5 bg-red-600">
                 <div className="health-bar"
                      style={{width: `${100 * (health / maxHealth)}%`}}>
                 </div>
               </div>
-              <p className="text-center">{health}</p>
+              <p className="text-center">{health.toFixed(1)}</p>
             </div>
           </>
         }
