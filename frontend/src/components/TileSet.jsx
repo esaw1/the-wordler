@@ -3,7 +3,7 @@ import { getLetterColor } from "../utils/LetterUtils.jsx";
 
 const TileSet = ({ letters, selected, handleLetter, handleBackspace, handleEnter }) => {
   return (
-    <div className="relative flex flex-wrap max-w-[220px] justify-center gap-2">
+    <div className="flex flex-wrap relative justify-center max-w-[220px] gap-2">
       {letters.map((letter, index) => (
         <div
           key={index}

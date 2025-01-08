@@ -17,12 +17,13 @@ import {
 import {DamageBox} from "./components/DamageBox.jsx";
 import {HealthBar} from "./components/HealthBar.jsx";
 import {GameResults} from "./components/GameResults.jsx";
+import {Instructions} from "./components/InstructionBox.jsx";
 
 const maxHealth = 50;
 const tickRate = 1000;
 
 function App() {
-  const [title, setTitle] = useState("")
+  const [title, setTitle] = useState("");
   const [count, setCount] = useState(16);
   const [letters, setLetters] = useState([]);
   const [selected, setSelected] = useState([]);
@@ -32,6 +33,7 @@ function App() {
   const [healthChange, setHealthChange] = useState(0);
 
   const [showResults, setShowResults] = useState(false);
+  const [showInstructions, setShowInstructions] = useState(false);
   const [gameTime, setGameTime] = useState(0);
   const [score, setScore] = useState(0);
   const [wordList, setWordList] = useState([]);
@@ -56,7 +58,7 @@ function App() {
       const healthInterval = setInterval(() => {
         setGameTime((t) => t + tickRate);
         setHealth((prevHealth) => {
-          const decrement = Math.min(tickRate / 2000 + gameTime / 120000, tickRate / 500);
+          const decrement = Math.min(tickRate / 2000 + gameTime / 120000, (tickRate / 1000) * 1.5);
           setHealthChange(-decrement);
           console.log(`decrement:` + decrement);
           return Math.max(prevHealth - decrement, 0);
@@ -108,6 +110,8 @@ function App() {
       } else if (e.key === "Enter") {
         handleEnter();
       } else if (e.key === "Escape") {
+        setShowInstructions(false);
+        setShowResults(false);
         setSelected([]);
         setGameState((prevState) => {
           if (prevState) {
@@ -136,9 +140,9 @@ function App() {
   const handleLetter = (letter, index) => {
     if (selected.includes(index)) {
       setSelected((prevSelected) => prevSelected.filter((idx) => idx !== index));
-      flashTile("tile-" + index.toString());
+      flashTile("tile-" + index);
     } else if (title.length < count) {
-      flashTile("tile-" + index.toString(), undefined, '#4f46e5');
+      flashTile("tile-" + index, undefined, '#4f46e5');
       setSelected((prevSelected) => [...prevSelected, index]);
     }
   };
@@ -185,17 +189,19 @@ function App() {
         path="/the-wordler/"
         element={
           <>
-            <div className="flex justify-center items-center w-[25vh] h-[25vh]">
+            <div className="grid w-[25vh] h-[25vh] place-content-center">
               <DamageBox word={title}/>
             </div>
+
             <div className="min-w-[30vh] place-content-start">
               <h1
                 className="justify-center text-center min-h-[5vw] font-semibold bg-inherit text-[4.5vw] border-b">
                 {title}
               </h1>
+            </div>
 
               {!gameState && (
-                <div className="mt-8 text-center" id="countBar">
+                <div className="mt-8" id="countBar">
                   <input
                     type="range"
                     min="8"
@@ -205,11 +211,11 @@ function App() {
                     className="w-52"
                   />
                   <output
-                    className="grid justify-center text-sm text-gray-400">Tile
+                    className="grid text-center text-sm text-gray-400">Tile
                     Count: {count}</output>
                 </div>)}
 
-              <div className="justify-items-center mt-4">
+              <div className="mt-4">
                 <TileSet
                   letters={letters}
                   selected={selected}
@@ -218,7 +224,12 @@ function App() {
                   handleEnter={handleEnter}
                 />
               </div>
-              <div className="flex flex-grow place-self-center mt-4 gap-2">
+
+              <div className="grid grid-flow-col mt-4 gap-2">
+                {!gameState && (
+                  <button onClick={() => setShowInstructions(true)}>
+                    HOW TO PLAY
+                  </button>)}
                 {!gameState && (
                   <button onClick={startGame}>
                     START
@@ -228,6 +239,7 @@ function App() {
                     LAST GAME
                   </button>)}
               </div>
+
               <div className="justify-self-center mt-4">
                 <HealthBar
                   health={health}
@@ -236,7 +248,7 @@ function App() {
                   tickRate={tickRate}
                 />
               </div>
-            </div>
+
             {showResults && (
               <GameResults
                 gameTime={gameTime}
@@ -244,6 +256,9 @@ function App() {
                 wordList={wordList}
                 showResults={setShowResults}
               />
+            )}
+            {showInstructions && (
+              <Instructions showInstructions={setShowInstructions} />
             )}
           </>
         }
