@@ -82,12 +82,11 @@ export const Instructions = ({ showInstructions }) => {
             ))}
           </ul>
         </div>
-        <p className="mt-2">The total score of a word is then
-          calculated based on the total weight of its letters using
-          <a href="https://www.desmos.com/calculator/tp49qvo5z2" target="_blank"> this
-            curve</a>.
+        <p className="mt-2">The score of a word is then
+          calculated based on the total weight of its letters. Longer words give bonus score!
         </p>
-        <p className="mt-2 text-sm italic text-gray-400">
+        <p className="mt-2">For full detail, scoring uses <a href="https://www.desmos.com/calculator/ixeafzew2t" target="_blank"> this curve</a>.</p>
+        <p className="text-sm italic text-gray-400">
           Largely based off of the word game <a
           href="https://en.wikipedia.org/wiki/Bookworm_(video_game)" target="_blank">Bookworm</a>
         </p>
