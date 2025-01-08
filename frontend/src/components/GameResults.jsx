@@ -4,7 +4,7 @@ export const GameResults = ({ gameTime, score, wordList, showResults }) => {
   return (
     <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-75 z-[1000] flex items-center justify-center">
       <div
-        className="relative p-8 border rounded-md border-gray-600 bg-gray-800 max-w-[75%] max-h-[80%] overflow-y-auto"
+        className="relative p-4 border rounded-md border-gray-600 bg-gray-800 max-w-[75%] max-h-[80%] overflow-y-auto"
         style={{
           boxShadow: '0 5px 15px rgba(0,0,0,0.3)',
         }}
@@ -16,13 +16,16 @@ export const GameResults = ({ gameTime, score, wordList, showResults }) => {
           ✕
         </div>
 
-        <h2 className="text-lg font-semibold text-center">GAME OVER</h2>
+        <h2 className="text-[2rem] font-semibold text-center">GAME OVER</h2>
 
         <p>Time Elapsed: {gameTime / 1000}s</p>
         <p>Total Score: {score}</p>
 
-        <h3 className="mt-4 text-lg text-center font-semibold">WORDS ENTERED</h3>
+        <h3 className="mt-4 text-[2rem] text-center font-semibold">WORDS ENTERED</h3>
         <ul className="mt-2 space-y-1 text-sm">
+          {wordList.length === 0 && (
+            <p className="text-center">:(</p>
+          )}
           {wordList.sort((a, b) => b.value - a.value).map(({word, value}, index) => (
             <li key={index} className="flex justify-between">
               <span>{word}</span>
