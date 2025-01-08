@@ -93,7 +93,7 @@ export const Instructions = ({ showInstructions }) => {
 
         <h2 className="text-[2rem] font-semibold mt-4">GAMEPLAY</h2>
         <p className="mt-2">
-          Your health ticks down at a slowly increasing rate...
+          Your health ticks down faster and faster...
         </p>
         <p className="italic text-[1.2rem]">
           Quickly enter words to replenish it!
