@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import './App.css';
 import {Route, Routes} from 'react-router-dom';
-import Game from './game/Game.jsx';
+import SoloGame from './game/SoloGame.jsx';
 import {fetchLetter, getWordValue, resetBag} from './utils/LetterUtils.jsx'
 import {
   flashBackground,
@@ -200,54 +200,54 @@ function App() {
               </h1>
             </div>
 
+            {!gameState && (
+              <div className="mt-4" id="countBar">
+                <input
+                  type="range"
+                  min="8"
+                  max="24"
+                  value={count}
+                  onChange={(e) => setCount(Number(e.target.value))}
+                  className="w-52"
+                />
+                <output
+                  className="grid text-center text-sm text-gray-400">Tile
+                  Count: {count}</output>
+              </div>)}
+
+            <div className="mt-4">
+              <TileSet
+                letters={letters}
+                selected={selected}
+                handleLetter={handleLetter}
+                handleBackspace={handleBackspace}
+                handleEnter={handleEnter}
+              />
+            </div>
+
+            <div className="grid grid-flow-col mt-4 gap-2">
               {!gameState && (
-                <div className="mt-8" id="countBar">
-                  <input
-                    type="range"
-                    min="8"
-                    max="24"
-                    value={count}
-                    onChange={(e) => setCount(Number(e.target.value))}
-                    className="w-52"
-                  />
-                  <output
-                    className="grid text-center text-sm text-gray-400">Tile
-                    Count: {count}</output>
-                </div>)}
+                <button onClick={() => setShowInstructions(true)}>
+                  HOW TO PLAY
+                </button>)}
+              {!gameState && (
+                <button onClick={startGame}>
+                  START
+                </button>)}
+              {!gameState && gameTime !== 0 && (
+                <button onClick={() => setShowResults(true)}>
+                  LAST GAME
+                </button>)}
+            </div>
 
-              <div className="mt-4">
-                <TileSet
-                  letters={letters}
-                  selected={selected}
-                  handleLetter={handleLetter}
-                  handleBackspace={handleBackspace}
-                  handleEnter={handleEnter}
-                />
-              </div>
-
-              <div className="grid grid-flow-col mt-4 gap-2">
-                {!gameState && (
-                  <button onClick={() => setShowInstructions(true)}>
-                    HOW TO PLAY
-                  </button>)}
-                {!gameState && (
-                  <button onClick={startGame}>
-                    START
-                  </button>)}
-                {!gameState && gameTime !== 0 && (
-                  <button onClick={() => setShowResults(true)}>
-                    LAST GAME
-                  </button>)}
-              </div>
-
-              <div className="justify-self-center mt-4">
-                <HealthBar
-                  health={health}
-                  maxHealth={maxHealth}
-                  healthChange={healthChange}
-                  tickRate={tickRate}
-                />
-              </div>
+            <div className="mt-4">
+              <HealthBar
+                health={health}
+                maxHealth={maxHealth}
+                healthChange={healthChange}
+                tickRate={tickRate}
+              />
+            </div>
 
             {showResults && (
               <GameResults
@@ -263,7 +263,7 @@ function App() {
           </>
         }
       />
-      <Route path="/the-wordler/game" element={<Game/>}/>
+      <Route path="/the-wordler/game" element={<SoloGame/>}/>
     </Routes>
   );
 }

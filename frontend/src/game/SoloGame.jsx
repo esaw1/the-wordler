@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Game = (count) => {
+const SoloGame = (count) => {
   return (
     <div>
       <h1>
@@ -10,4 +10,4 @@ const Game = (count) => {
   );
 };
 
-export default Game;
+export default SoloGame;
