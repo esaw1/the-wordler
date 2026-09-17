@@ -115,7 +115,7 @@ button:focus-visible {
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid white;
+  border: 1px solid var(--tile-border-color);
   background-color: #2d2d2d;
   color: white;
   font-size: 1.125rem;
@@ -124,6 +124,7 @@ button:focus-visible {
   transition: background-color 0.3s;
   --flash-start: #6366f1;
   --flash-end: #2d2d2d;
+  --tile-border-color: white;
 }
 
 .tile:hover {
@@ -141,7 +142,7 @@ button:focus-visible {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  outline: 1px solid white;
+  outline: 1px solid var(--tile-border-color);
   font-size: 10px;
   font-weight: 200;
 }
@@ -206,7 +207,7 @@ button:focus-visible {
 @media (prefers-color-scheme: light) {
   .tile {
     background-color: #d8dee3;
-    border-color: #4b5563;
+    --tile-border-color: #4b5563;
     color: #1f2933;
     --flash-end: #d8dee3;
   }
