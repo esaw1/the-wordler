@@ -20,7 +20,7 @@
   --flash-end: #242424;
   --panel-background: #1f2025;
   --panel-border: #3d434d;
-  --section-background: rgba(255, 255, 255, 0.06);
+  --section-background: #17171d;
 }
 
 a {
@@ -179,11 +179,6 @@ button:focus-visible {
   padding: 1rem;
 }
 
-.instruction-panel .border-b,
-.results-panel .border-b {
-  border-color: currentColor;
-}
-
 .current-run {
   background-color: rgba(99, 102, 241, 0.24);
 }
@@ -264,6 +259,11 @@ button:focus-visible {
   }
 
   .place-content-start h1 {
+    border-color: #4b5563;
+  }
+
+  .instruction-panel .border-b,
+  .results-panel .border-b {
     border-color: #4b5563;
   }
 
