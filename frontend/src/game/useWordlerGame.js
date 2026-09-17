@@ -30,6 +30,7 @@ export function useWordlerGame() {
   const [healthIncrease, setHealthIncrease] = useState(0);
   const [healthDecrease, setHealthDecrease] = useState(0);
   const [decrement, setDecrement] = useState(INITIAL_DECREMENT);
+  const [shufflePenalty, setShufflePenalty] = useState(5);
   const [showResults, setShowResults] = useState(false);
   const [showInstructions, setShowInstructions] = useState(false);
   const [gameTime, setGameTime] = useState(0);
@@ -89,10 +90,11 @@ export function useWordlerGame() {
     }));
     setSelected([]);
     if (gameState === true) {
-      setHealthDecrease(5);
-      setHealth((previous) => Math.max(previous - 5, 0));
+      setHealthDecrease(shufflePenalty);
+      setHealth((previous) => Math.max(previous - shufflePenalty, 0));
+      setShufflePenalty((previous) => previous + 3);
     }
-  }, [gameState]);
+  }, [gameState, shufflePenalty]);
 
   const startGame = () => {
     resetBag();
@@ -107,6 +109,7 @@ export function useWordlerGame() {
     setGameState(true);
     setHealth(MAX_HEALTH / 2);
     setDecrement(INITIAL_DECREMENT);
+    setShufflePenalty(5);
     setScore(0);
     setWordList([]);
   };
@@ -223,6 +226,7 @@ export function useWordlerGame() {
     healthIncrease,
     healthDecrease,
     decrement,
+    shufflePenalty,
     letters,
     score,
     selected,

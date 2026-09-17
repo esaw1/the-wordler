@@ -13,6 +13,7 @@ function App() {
     count, gameState, gameTime, handleBackspace, handleEnter, handleLetter,
     handleShuffle,
     health, healthIncrease, healthDecrease, decrement, letters, score, selected, setCount,
+    shufflePenalty,
     setShowInstructions, setShowResults, showInstructions, showResults,
     startGame, title, wordList, maxHealth, tickRate,
   } = game;
@@ -57,6 +58,7 @@ function App() {
                 handleBackspace={handleBackspace}
                 handleEnter={handleEnter}
                 handleShuffle={handleShuffle}
+                shufflePenalty={shufflePenalty}
               />
             </div>
 

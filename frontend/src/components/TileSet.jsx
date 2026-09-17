@@ -1,7 +1,7 @@
 import React from 'react';
 import { getLetterColor } from "../utils/LetterUtils.jsx";
 
-const TileSet = ({ letters, selected, handleLetter, handleBackspace, handleEnter, handleShuffle }) => {
+const TileSet = ({ letters, selected, handleLetter, handleBackspace, handleEnter, handleShuffle, shufflePenalty }) => {
   return (
     <div className="flex flex-wrap relative justify-center max-w-[220px] gap-2">
       {letters.map((letter, index) => (
@@ -48,6 +48,12 @@ const TileSet = ({ letters, selected, handleLetter, handleBackspace, handleEnter
         }}
       >
         <span>&#8635;</span>
+        <div 
+          className="absolute top-[0%] left-[32%] text-[10px] w-full text-center"
+          style={{color: "#e3e3e3"}}
+          >
+          -{shufflePenalty}
+        </div>
       </div>
     </div>
   );
