@@ -1,25 +1,39 @@
-import React, {useEffect} from "react";
+import {useEffect} from "react";
 import {refreshAnimation} from "../utils/AnimationUtils.jsx";
 
-export const HealthBar = ({ health, maxHealth, healthChange, tickRate }) => {
+const animateHealthChange = (elementId, amount, tickRate) => {
+  if (amount <= 0) {
+    return;
+  }
 
-  const el = document.getElementById("health-change");
+  const element = document.getElementById(elementId);
+  if (!element) {
+    return;
+  }
+
+  element.classList.add('health-change-show');
+  element.style.setProperty('--move-amount', `${0.5 + 0.2 * amount.toFixed(3)}rem`);
+  element.style.setProperty('--scale-amount', `${0.9 + amount / 5}`);
+  element.style.setProperty('--repeat-speed', `${Math.round(0.9 * tickRate)}ms`);
+  refreshAnimation(elementId);
+};
+
+export const HealthBar = ({ health, maxHealth, healthIncrease, healthDecrease, tickRate }) => {
 
   useEffect(() => {
-    if (el) {
-      if (!el.classList.contains("health-change-show")) {
-        el.classList.add('health-change-show');
-      }
-      el.style.setProperty('--move-amount', `${0.5 + 0.2 * Math.abs(healthChange).toFixed(3)}rem`);
-      el.style.setProperty('--scale-amount', `${0.9 + Math.abs(healthChange) / 5}`);
-      el.style.setProperty('--repeat-speed', `${Math.round(0.9 * tickRate)}ms`);
-      refreshAnimation("health-change");
-    }
-  }, [healthChange]);
+    animateHealthChange('health-increase', healthIncrease, tickRate);
+  }, [healthIncrease, tickRate]);
+
+  useEffect(() => {
+    animateHealthChange('health-decrease', healthDecrease, tickRate);
+  }, [healthDecrease, tickRate]);
 
   return (
     <div className="flex flex-col items-center space-y-1">
       <div className="relative w-60 h-2.5 bg-red-600">
+        <span className="absolute right-full mr-3 top-1/2 -translate-y-1/2 whitespace-nowrap text-sm text-red-500">
+          -{healthDecrease.toFixed(2)}/s
+        </span>
         <div
           className="h-full bg-green-600 transition-[width] 1s ease-in-out"
           style={{ width: `${100 * (health / maxHealth)}%` }}
@@ -29,14 +43,20 @@ export const HealthBar = ({ health, maxHealth, healthChange, tickRate }) => {
         {health.toFixed(1)}
         <div
           className="absolute font-bold opacity-0 inset-y-0 left-[110%]"
-          style={{
-            color: healthChange < 0 ? "#dc2626" : "#16a34a",
-          }}
-          id="health-change"
+          style={{color: "#16a34a"}}
+          id="health-increase"
         >
-          {((healthChange > 0) ? '+' : '') + healthChange.toFixed(1)}
+          +{healthIncrease.toFixed(1)}
+        </div>
+        <div
+          className="absolute font-bold opacity-0 inset-y-0 left-[180%]"
+          style={{color: "#dc2626"}}
+          id="health-decrease"
+        >
+          -{healthDecrease.toFixed(1)}
         </div>
       </div>
+      
     </div>
   );
 };

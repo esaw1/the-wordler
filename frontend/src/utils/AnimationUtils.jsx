@@ -25,13 +25,13 @@ export const getRandomDirections = () => {
 export const shakeScreen = (value) => {
   const el = document.getElementById("root");
   if (el && !el.classList.contains("flashing")) {
-    const totalIterations = Math.floor(5 + value / 5);
+    const totalIterations = Math.floor(6 + value / 3);
     let currentIteration = 0;
     let index = Math.floor(Math.random() * randomDirections.length);
 
     el.style.setProperty('--shake-amount', `${totalIterations}`);
-    el.style.setProperty('--shake-speed', `${Math.max(50 - value, 20)}ms`);
-    el.style.setProperty('--shake-strength', `${Math.round(15 * value / 10)}px`);
+    el.style.setProperty('--shake-speed', `${Math.max(40 - value, 15)}ms`);
+    el.style.setProperty('--shake-strength', `${Math.round(20 * value / 10)}px`);
 
     refreshAnimation("root");
     el.classList.add('shake-screen');
