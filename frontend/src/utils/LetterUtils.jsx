@@ -82,11 +82,11 @@ export const getWordValue = (word) => {
 export const getLetterColor = (letter) => {
   const weight = getLetterWeight(letter);
   switch (weight) {
-    case 1.00: return '#42546d'
+    case 1.00: return '#4b5f7a'
     case 1.25: return '#bf762e'
     case 1.50: return '#C0C0C0'
     case 1.75: return '#FFD700'
     case 2.00: return '#84dfe0'
-    default: return '#334155'
+    default: return '#4b5f7a'
   }
 }
