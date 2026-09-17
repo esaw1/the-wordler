@@ -146,6 +146,10 @@ button:focus-visible {
   font-weight: 200;
 }
 
+.shuffle-penalty {
+  color: #e3e3e3;
+}
+
 .damage-box {
   --shake-strength: 0px;
   --shake-speed: 0s;
@@ -219,6 +223,10 @@ button:focus-visible {
   .instruction-panel .text-gray-400,
   .results-panel .text-gray-400 {
     color: #4b5563 !important;
+  }
+
+  .shuffle-penalty {
+    color: #374151;
   }
 }
 

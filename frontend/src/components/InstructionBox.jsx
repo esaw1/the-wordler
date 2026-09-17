@@ -115,8 +115,7 @@ export const Instructions = ({ showInstructions }) => {
           >
             <span>&#8635;</span>
             <div
-              className="absolute top-[0%] left-[32%] w-full text-center text-[10px]"
-              style={{color: "#e3e3e3"}}
+              className="shuffle-penalty absolute top-[0%] left-[32%] w-full text-center text-[10px]"
             >
               -{shufflePenaltyExample}
             </div>

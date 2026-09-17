@@ -49,8 +49,7 @@ const TileSet = ({ letters, selected, handleLetter, handleBackspace, handleEnter
       >
         <span>&#8635;</span>
         <div 
-          className="absolute top-[0%] left-[32%] text-[10px] w-full text-center"
-          style={{color: "#e3e3e3"}}
+          className="shuffle-penalty absolute top-[0%] left-[32%] text-[10px] w-full text-center"
           >
           -{shufflePenalty}
         </div>
