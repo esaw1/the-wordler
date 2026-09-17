@@ -31,7 +31,7 @@ export const Instructions = ({ showInstructions }) => {
   const handleLetter = (letter, index) => {
     if (!selected.includes(letter)) {
       setSelected((prevState) => [...prevState, letter]);
-      flashTile("tile-example-" + index, undefined, '#4f46e5');
+      flashTile("tile-example-" + index, undefined);
     } else {
       setSelected((prevState) => prevState.filter((l) => l !== letter));
       flashTile("tile-example-" + index);
@@ -50,11 +50,6 @@ export const Instructions = ({ showInstructions }) => {
     >
       <div
         className={`instruction-panel relative h-full w-full max-w-[32rem] overflow-y-auto border-r p-5 text-center transition-[transform] duration-[250ms] ease-in-out ${isVisible && !isClosing ? 'translate-x-0' : '-translate-x-full'}`}
-        style={{
-          boxShadow: '5px 0 15px rgba(0,0,0,0.3)',
-          borderColor: '#3d434d',
-          backgroundColor: '#1f2025',
-        }}
         onClick={(event) => event.stopPropagation()}
       >
         <div

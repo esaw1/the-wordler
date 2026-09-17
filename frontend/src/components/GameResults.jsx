@@ -41,11 +41,6 @@ export const GameResults = ({gameId, score, gameTime, wordList, showResults}) =>
     >
       <div
         className={`results-panel relative h-full w-full max-w-[32rem] overflow-y-auto border-l p-5 text-center transition-[transform] duration-[250ms] ease-in-out ${isVisible && !isClosing ? 'translate-x-0' : 'translate-x-full'}`}
-        style={{
-          boxShadow: '-5px 0 15px rgba(0,0,0,0.3)',
-          borderColor: '#3d434d',
-          backgroundColor: '#1f2025',
-        }}
         onClick={(event) => event.stopPropagation()}
       >
         <div
@@ -59,11 +54,14 @@ export const GameResults = ({gameId, score, gameTime, wordList, showResults}) =>
 
         <div className="grid grid-cols-1 gap-6 mt-5 text-left sm:grid-cols-[3fr_2fr]">
           <section>
-            <h3 className="text-xl font-semibold border-b pb-1">TOP SCORES</h3>
+            <h3 className="leaderboard-heading text-xl font-semibold border-b pb-1">TOP SCORES</h3>
             <ul className="mt-2 space-y-1">
               {leaderboard.scores.length === 0 && <li className="text-gray-400">No scores yet</li>}
-              {leaderboard.scores.map(({score: savedScore, date, durationSeconds}, index) => (
-                <li key={`${savedScore}-${index}`} className="grid grid-cols-[1fr_3fr_1fr] items-baseline gap-2">
+              {leaderboard.scores.map(({gameId: savedGameId, score: savedScore, date, durationSeconds}, index) => (
+                <li
+                  key={`${savedGameId}-${index}`}
+                  className={`leaderboard-row grid grid-cols-[1fr_3fr_1fr] items-baseline gap-2 ${savedGameId === gameId ? 'current-run' : ''}`}
+                >
                   <span className="block">{savedScore}</span>
                   <span className="block overflow-visible text-center text-sm text-gray-400">
                     {date ? new Date(date).toLocaleDateString() : 'Date unavailable'}
@@ -77,12 +75,15 @@ export const GameResults = ({gameId, score, gameTime, wordList, showResults}) =>
           </section>
 
           <section>
-            <h3 className="text-xl font-semibold border-b pb-1">TOP WORDS</h3>
+            <h3 className="leaderboard-heading text-xl font-semibold border-b pb-1">TOP WORDS</h3>
             <ul className="mt-2 space-y-1">
               {leaderboard.words.length === 0 && <li className="text-gray-400">No words yet</li>}
               {leaderboard.words.map(({word, value, gameId: wordGameId}, index) => (
-                <li key={`${wordGameId}-${word}-${index}`} className="grid grid-cols-[1fr_auto]">
-                  <span>
+                <li
+                  key={`${wordGameId}-${word}-${index}`}
+                  className={`leaderboard-row grid grid-cols-[1fr_auto] ${wordGameId === gameId ? 'current-run' : ''}`}
+                >
+                  <span className="">
                     {word.split('').map((letter, letterIndex) => (
                       <span key={`${word}-${letterIndex}`} style={{color: getLetterColor(letter)}}>
                         {letter}
