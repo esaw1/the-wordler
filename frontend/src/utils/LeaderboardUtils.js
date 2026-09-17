@@ -40,7 +40,7 @@ export const recordGame = (gameId, score, gameTime, wordList) => {
         date: new Date().toISOString(),
         durationSeconds: Math.round(gameTime / 1000),
       },
-    ].sort((first, second) => second.score - first.score).slice(0, 5),
+    ].sort((first, second) => second.score - first.score).slice(0, 10),
     words: [
       ...leaderboard.words,
       ...wordList.map(({word, value}) => ({word, value, gameId})),

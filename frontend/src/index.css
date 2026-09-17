@@ -226,6 +226,10 @@ button:focus-visible {
     color: #4b5563 !important;
   }
 
+  .place-content-start h1 {
+    border-color: #4b5563;
+  }
+
   .shuffle-penalty {
     color: #374151;
   }
