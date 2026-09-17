@@ -201,7 +201,7 @@ export function useWordlerGame() {
       } else if (event.key === 'Enter') {
         handleEnter();
       } else if (event.key === 'Escape') {
-        endGame();
+        setSelected([]);
       } else {
         let index = letters.indexOf(pressedKey);
         while (index !== -1 && selected.includes(index)) {

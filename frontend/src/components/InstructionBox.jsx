@@ -1,9 +1,32 @@
-import React, {useEffect, useState} from 'react'
-import {flashTile, refreshAnimation} from "../utils/AnimationUtils.jsx";
+import React, {useEffect, useRef, useState} from 'react'
+import {flashTile} from "../utils/AnimationUtils.jsx";
 import {getLetterColor, getLetterWeight} from "../utils/LetterUtils.jsx";
 
 export const Instructions = ({ showInstructions }) => {
   const [selected, setSelected] = useState([]);
+  const [shufflePenaltyExample, setShufflePenaltyExample] = useState(5);
+  const [isVisible, setIsVisible] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
+  const closeTimeout = useRef(null);
+
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => setIsVisible(true));
+
+    return () => {
+      cancelAnimationFrame(frame);
+      clearTimeout(closeTimeout.current);
+    };
+  }, []);
+
+  const closeInstructions = () => {
+    if (isClosing) {
+      return;
+    }
+
+    setIsClosing(true);
+    setIsVisible(false);
+    closeTimeout.current = setTimeout(() => showInstructions(false), 250);
+  };
 
   const handleLetter = (letter, index) => {
     if (!selected.includes(letter)) {
@@ -15,19 +38,28 @@ export const Instructions = ({ showInstructions }) => {
     }
   };
 
+  const handleShuffleExample = () => {
+    flashTile('example-shuffle');
+    setShufflePenaltyExample((previous) => previous + 3);
+  };
+
   return (
     <div
-      className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-40 z-[1000] flex items-center justify-center"
+      className={`fixed inset-0 z-[1000] flex justify-start bg-black bg-opacity-50 transition-[opacity] duration-[250ms] ease-in-out ${isVisible ? 'opacity-100' : 'opacity-0'}`}
+      onClick={closeInstructions}
     >
       <div
-        className="relative p-4 border rounded-md border-gray-600 bg-gray-800 max-w-[30rem] max-h-[80%] overflow-y-auto text-center"
+        className={`relative h-full w-full max-w-[32rem] overflow-y-auto border-r p-5 text-center transition-[transform] duration-[250ms] ease-in-out ${isVisible && !isClosing ? 'translate-x-0' : '-translate-x-full'}`}
         style={{
-          boxShadow: '0 5px 15px rgba(0,0,0,0.3)',
+          boxShadow: '5px 0 15px rgba(0,0,0,0.3)',
+          borderColor: '#3d434d',
+          backgroundColor: '#1f2025',
         }}
+        onClick={(event) => event.stopPropagation()}
       >
         <div
           className="absolute top-0 right-2 text-gray-600 hover:text-gray-800 cursor-pointer"
-          onClick={() => showInstructions(false)}
+          onClick={closeInstructions}
         >
           ✕
         </div>
@@ -39,7 +71,7 @@ export const Instructions = ({ showInstructions }) => {
             <p className="italic text-sm text-gray-400">Each tile can only be
               used once per word</p>
           </div>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-flow-col">
             {['A', 'B'].map((letter, index) => (
               <div
                 key={index}
@@ -63,7 +95,35 @@ export const Instructions = ({ showInstructions }) => {
             className="w-[3rem] self-end font-semibold text-3xl border-b">{selected.join('')}</p>
         </div>
 
-        <h2 className="text-[2rem] font-semibold mt-4">SCORING</h2>
+        <h2 className="text-[2rem] font-semibold mt-8">GAMEPLAY</h2>
+        <p className="mt-2">
+          Your health ticks down faster and faster...
+        </p>
+        <p className="italic text-[1.2rem]">
+          Quickly enter words to replenish it!
+        </p>
+        <div className="mt-4 grid grid-cols-[4fr_1fr] justify-center gap-4">
+          <p className="text-right">
+            If you're stuck, you can <span style={{ color: "#72a3b9" }}>shuffle</span> the tiles, with an increasing cost to your health.
+          </p>
+          <div
+            className="tile relative flashing shrink-0"
+            id="example-shuffle"
+            role="button"
+            tabIndex="0"
+            onClick={handleShuffleExample}
+          >
+            <span>&#8635;</span>
+            <div
+              className="absolute top-[0%] left-[32%] w-full text-center text-[10px]"
+              style={{color: "#e3e3e3"}}
+            >
+              -{shufflePenaltyExample}
+            </div>
+          </div>
+        </div>
+
+        <h2 className="text-[2rem] font-semibold mt-8">SCORING</h2>
         <p className="mt-2">Each letter has an assigned color and
           weight:</p>
         <div className="mt-2 justify-self-center w-[15%]">
@@ -83,20 +143,13 @@ export const Instructions = ({ showInstructions }) => {
           </ul>
         </div>
         <p className="mt-2">The score of a word is then
-          calculated based on the total weight of its letters. Longer words give bonus score!
-        </p>
-        <p className="mt-2">For full detail, scoring uses <a href="https://www.desmos.com/calculator/ixeafzew2t" target="_blank"> this curve</a>.</p>
+          calculated based on the total weight of its letters. 
+          Longer words <span style={{ color: "#72a3b9" }}>give bonus score </span>
+          and <span style={{ color: "#72a3b9" }}>reduce health drainage!</span></p>
+        <p className="mt-4">For full detail, scoring uses <a href="https://www.desmos.com/calculator/ixeafzew2t" target="_blank"> this curve</a>.</p>
         <p className="text-sm italic text-gray-400">
           Largely based off of the word game <a
           href="https://en.wikipedia.org/wiki/Bookworm_(video_game)" target="_blank">Bookworm</a>
-        </p>
-
-        <h2 className="text-[2rem] font-semibold mt-4">GAMEPLAY</h2>
-        <p className="mt-2">
-          Your health ticks down faster and faster...
-        </p>
-        <p className="italic text-[1.2rem]">
-          Quickly enter words to replenish it!
         </p>
       </div>
     </div>
