@@ -18,7 +18,7 @@ const animateHealthChange = (elementId, amount, tickRate) => {
   refreshAnimation(elementId);
 };
 
-export const HealthBar = ({ health, maxHealth, healthIncrease, healthDecrease, decrement, tickRate }) => {
+export const HealthBar = ({ health, maxHealth, healthIncrease, healthDecrease, shuffleHealthDecrease, decrement, tickRate }) => {
   const previousDecrement = useRef(decrement);
 
   useEffect(() => {
@@ -28,6 +28,10 @@ export const HealthBar = ({ health, maxHealth, healthIncrease, healthDecrease, d
   useEffect(() => {
     animateHealthChange('health-decrease', healthDecrease, tickRate);
   }, [healthDecrease, tickRate]);
+
+  useEffect(() => {
+    animateHealthChange('shuffle-health-decrease', shuffleHealthDecrease, tickRate);
+  }, [shuffleHealthDecrease, tickRate]);
 
   useEffect(() => {
     const el = document.getElementById("decrement-display");
@@ -74,6 +78,13 @@ export const HealthBar = ({ health, maxHealth, healthIncrease, healthDecrease, d
           id="health-decrease"
         >
           -{healthDecrease.toFixed(1)}
+        </div>
+        <div
+          className="absolute font-bold opacity-0 inset-y-0 left-[110%]"
+          style={{color: "#dc2626"}}
+          id="shuffle-health-decrease"
+        >
+          -{shuffleHealthDecrease.toFixed(1)}
         </div>
       </div>
       

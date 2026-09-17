@@ -20,6 +20,7 @@
   --flash-end: #242424;
   --panel-background: #1f2025;
   --panel-border: #3d434d;
+  --section-background: rgba(255, 255, 255, 0.06);
 }
 
 a {
@@ -67,8 +68,10 @@ button:focus-visible {
   :root {
     color: #213547;
     background-color: #b7bcc0;
+    --flash-end: #b7bcc0;
     --surface-background: #d1d2d4;
     --surface-border: #6d6f72;
+    --section-background: #eef1f3;
   }
   a:hover {
     color: #747bff;
@@ -166,13 +169,19 @@ button:focus-visible {
   box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
 }
 
-.leaderboard-heading {
-  border-color: var(--panel-border);
-}
-
 .leaderboard-row {
   padding-inline: 0.5rem;
-  background-color: rgba(255, 255, 255, 0.06);
+  background-color: var(--section-background);
+}
+
+.instruction-section {
+  background-color: var(--section-background);
+  padding: 1rem;
+}
+
+.instruction-panel .border-b,
+.results-panel .border-b {
+  border-color: currentColor;
 }
 
 .current-run {
@@ -251,7 +260,7 @@ button:focus-visible {
 
   .instruction-panel .text-gray-400,
   .results-panel .text-gray-400 {
-    color: #4b5563 !important;
+    color: #4b5563;
   }
 
   .place-content-start h1 {
@@ -263,7 +272,7 @@ button:focus-visible {
   }
 
   .leaderboard-row {
-    background-color: #eef1f3;
+    background-color: var(--section-background);
   }
 
   .current-run {

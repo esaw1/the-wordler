@@ -12,7 +12,7 @@ function App() {
   const {
     count, gameState, gameId, gameTime, handleBackspace, handleEnter, handleLetter,
     handleShuffle,
-    health, healthIncrease, healthDecrease, decrement, letters, score, selected,
+    health, healthIncrease, healthDecrease, shuffleHealthDecrease, decrement, letters, score, selected,
     shufflePenalty,
     setShowInstructions, setShowResults, showInstructions, showResults,
     startGame, title, wordList, maxHealth, tickRate,
@@ -47,7 +47,19 @@ function App() {
               />
             </div>
 
-            <div className="grid grid-flow-col mt-4 gap-2">
+            <div className="mt-5">
+              <HealthBar
+                health={health}
+                maxHealth={maxHealth}
+                healthIncrease={healthIncrease}
+                healthDecrease={healthDecrease}
+                shuffleHealthDecrease={shuffleHealthDecrease}
+                decrement={decrement}
+                tickRate={tickRate}
+              />
+            </div>
+
+            <div className="grid grid-flow-col mt-5 gap-2">
               {!gameState && (
                 <button onClick={() => setShowInstructions(true)}>
                   HOW TO PLAY
@@ -60,17 +72,6 @@ function App() {
                 <button onClick={() => setShowResults(true)}>
                   LEADERBOARD
                 </button>)}
-            </div>
-
-            <div className="mt-4">
-              <HealthBar
-                health={health}
-                maxHealth={maxHealth}
-                healthIncrease={healthIncrease}
-                healthDecrease={healthDecrease}
-                decrement={decrement}
-                tickRate={tickRate}
-              />
             </div>
 
             {showResults && (

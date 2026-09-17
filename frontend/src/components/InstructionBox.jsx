@@ -59,14 +59,15 @@ export const Instructions = ({ showInstructions }) => {
           ✕
         </div>
 
-        <h2 className="text-[2rem] font-semibold">HOW TO PLAY</h2>
-        <div className="mt-2 grid grid-flow-col gap-4">
+        <div className="instruction-section">
+          <h2 className="text-[2rem] font-semibold">HOW TO PLAY</h2>
+          <div className="mt-2 grid grid-flow-col gap-4">
           <div className="text-right">
             <p>Select tiles to form a word!</p>
             <p className="italic text-sm text-gray-400">Each tile can only be
               used once per word</p>
           </div>
-          <div className="grid grid-flow-col">
+          <div className="grid grid-flow-col gap-2">
             {['A', 'B'].map((letter, index) => (
               <div
                 key={index}
@@ -88,16 +89,18 @@ export const Instructions = ({ showInstructions }) => {
           </div>
           <p
             className="w-[3rem] self-end font-semibold text-3xl border-b">{selected.join('')}</p>
+          </div>
         </div>
 
-        <h2 className="text-[2rem] font-semibold mt-8">GAMEPLAY</h2>
-        <p className="mt-2">
+        <div className="instruction-section 4 mt-5">
+          <h2 className="text-[2rem] font-semibold">GAMEPLAY</h2>
+          <p className="mt-2">
           Your health ticks down faster and faster...
-        </p>
-        <p className="italic text-[1.2rem]">
+          </p>
+          <p className="italic text-[1.2rem]">
           Quickly enter words to replenish it!
-        </p>
-        <div className="mt-4 grid grid-cols-[4fr_1fr] justify-center gap-4">
+          </p>
+          <div className="mt-5 grid grid-cols-[4fr_1fr] justify-center gap-4">
           <p className="text-right">
             If you're stuck, you can <span style={{ color: "#72a3b9" }}>shuffle</span> the tiles, with an increasing cost to your health.
           </p>
@@ -115,10 +118,12 @@ export const Instructions = ({ showInstructions }) => {
               -{shufflePenaltyExample}
             </div>
           </div>
+          </div>
         </div>
 
-        <h2 className="text-[2rem] font-semibold mt-8">SCORING</h2>
-        <p className="mt-2">Each letter has an assigned color and
+        <div className="instruction-section mt-5">
+          <h2 className="text-[2rem] font-semibold">SCORING</h2>
+          <p className="mt-2">Each letter has an assigned color and
           weight:</p>
         <div className="mt-2 justify-self-center w-[15%]">
           <ul className="space-y-1">
@@ -140,11 +145,12 @@ export const Instructions = ({ showInstructions }) => {
           calculated based on the total weight of its letters. 
           Longer words <span style={{ color: "#72a3b9" }}>give bonus score </span>
           and <span style={{ color: "#72a3b9" }}>reduce health drainage!</span></p>
-        <p className="mt-4">For full detail, scoring uses <a href="https://www.desmos.com/calculator/ixeafzew2t" target="_blank"> this curve</a>.</p>
-        <p className="text-sm italic text-gray-400">
+        <p className="mt-5">For full detail, scoring uses <a href="https://www.desmos.com/calculator/ixeafzew2t" target="_blank"> this curve</a>.</p>
+          <p className="text-sm italic text-gray-400">
           Largely based off of the word game <a
           href="https://en.wikipedia.org/wiki/Bookworm_(video_game)" target="_blank">Bookworm</a>
-        </p>
+          </p>
+        </div>
       </div>
     </div>
   );

@@ -54,7 +54,7 @@ export const GameResults = ({gameId, score, gameTime, wordList, showResults}) =>
 
         <div className="grid grid-cols-1 gap-6 mt-5 text-left sm:grid-cols-[3fr_2fr]">
           <section>
-            <h3 className="leaderboard-heading text-xl font-semibold border-b pb-1">TOP SCORES</h3>
+            <h3 className="text-xl font-semibold border-b pb-1">TOP SCORES</h3>
             <ul className="mt-2 space-y-1">
               {leaderboard.scores.length === 0 && <li className="text-gray-400">No scores yet</li>}
               {leaderboard.scores.map(({gameId: savedGameId, score: savedScore, date, durationSeconds}, index) => (
@@ -75,7 +75,7 @@ export const GameResults = ({gameId, score, gameTime, wordList, showResults}) =>
           </section>
 
           <section>
-            <h3 className="leaderboard-heading text-xl font-semibold border-b pb-1">TOP WORDS</h3>
+            <h3 className="text-xl font-semibold border-b pb-1">TOP WORDS</h3>
             <ul className="mt-2 space-y-1">
               {leaderboard.words.length === 0 && <li className="text-gray-400">No words yet</li>}
               {leaderboard.words.map(({word, value, gameId: wordGameId}, index) => (
