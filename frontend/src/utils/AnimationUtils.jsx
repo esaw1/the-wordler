@@ -1,5 +1,3 @@
-import {useRef} from "react";
-
 export const refreshAnimation = (id) => {
   const el = document.getElementById(id);
   el.style.animation = 'none';
@@ -7,11 +5,15 @@ export const refreshAnimation = (id) => {
   el.style.animation = null;
 }
 
-export const flashTile = (id, startColor = '#6366f1', endColor = '#2d2d2d') => {
+export const flashTile = (id, startColor = '#6366f1', endColor) => {
   const tile = document.getElementById(id);
   if (tile) {
     tile.style.setProperty('--flash-start', startColor);
-    tile.style.setProperty('--flash-end', endColor);
+    if (endColor === undefined) {
+      tile.style.removeProperty('--flash-end');
+    } else {
+      tile.style.setProperty('--flash-end', endColor);
+    }
     refreshAnimation(id);
   }
 }

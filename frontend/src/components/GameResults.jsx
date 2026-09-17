@@ -40,7 +40,7 @@ export const GameResults = ({gameId, score, gameTime, wordList, showResults}) =>
       onClick={closeLeaderboard}
     >
       <div
-        className={`relative h-full w-full max-w-[32rem] overflow-y-auto border-l p-5 text-center transition-[transform] duration-[250ms] ease-in-out ${isVisible && !isClosing ? 'translate-x-0' : 'translate-x-full'}`}
+        className={`results-panel relative h-full w-full max-w-[32rem] overflow-y-auto border-l p-5 text-center transition-[transform] duration-[250ms] ease-in-out ${isVisible && !isClosing ? 'translate-x-0' : 'translate-x-full'}`}
         style={{
           boxShadow: '-5px 0 15px rgba(0,0,0,0.3)',
           borderColor: '#3d434d',

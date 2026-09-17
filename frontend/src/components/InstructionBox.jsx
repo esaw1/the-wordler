@@ -49,7 +49,7 @@ export const Instructions = ({ showInstructions }) => {
       onClick={closeInstructions}
     >
       <div
-        className={`relative h-full w-full max-w-[32rem] overflow-y-auto border-r p-5 text-center transition-[transform] duration-[250ms] ease-in-out ${isVisible && !isClosing ? 'translate-x-0' : '-translate-x-full'}`}
+        className={`instruction-panel relative h-full w-full max-w-[32rem] overflow-y-auto border-r p-5 text-center transition-[transform] duration-[250ms] ease-in-out ${isVisible && !isClosing ? 'translate-x-0' : '-translate-x-full'}`}
         style={{
           boxShadow: '5px 0 15px rgba(0,0,0,0.3)',
           borderColor: '#3d434d',
