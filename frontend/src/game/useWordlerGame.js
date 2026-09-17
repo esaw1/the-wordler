@@ -16,9 +16,11 @@ import {
 } from '../utils/LetterUtils.jsx';
 
 const MAX_HEALTH = 100;
-const TICK_RATE = 1000;
+const TICK_RATE = 1000; // 1 second
+const DECREMENT_RATE = 60000; // 1 minute
 const INITIAL_TILE_COUNT = 16;
-const INITIAL_DECREMENT = TICK_RATE / 2000;
+const INITIAL_DECREMENT = TICK_RATE / 2000; // 0.5 seconds
+const createGameId = () => window.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`;
 
 export function useWordlerGame() {
   const [title, setTitle] = useState('');
@@ -36,6 +38,7 @@ export function useWordlerGame() {
   const [gameTime, setGameTime] = useState(0);
   const [score, setScore] = useState(0);
   const [wordList, setWordList] = useState([]);
+  const [gameId, setGameId] = useState(null);
   const elapsedTimeRef = useRef(0);
 
   const handleLetter = useCallback((letter, index) => {
@@ -97,6 +100,7 @@ export function useWordlerGame() {
   }, [gameState, shufflePenalty]);
 
   const startGame = () => {
+    setGameId(createGameId());
     resetBag();
     setLetters((previous) => previous.map((letter, index) => {
       flashTile(`tile-${index}`);
@@ -138,7 +142,7 @@ export function useWordlerGame() {
 
       setDecrement((previous) => {
         const nextDecrement = Math.min(
-          previous + TICK_RATE / 120000,
+          previous + TICK_RATE / DECREMENT_RATE,
           (TICK_RATE / 1000) * 1.5,
         );
         setHealthDecrease(nextDecrement);
@@ -218,6 +222,7 @@ export function useWordlerGame() {
     endGame,
     gameState,
     gameTime,
+    gameId,
     handleBackspace,
     handleEnter,
     handleLetter,

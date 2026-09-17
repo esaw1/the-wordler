@@ -10,9 +10,9 @@ import {Instructions} from "./components/InstructionBox.jsx";
 function App() {
   const game = useWordlerGame();
   const {
-    count, gameState, gameTime, handleBackspace, handleEnter, handleLetter,
+    count, gameState, gameId, gameTime, handleBackspace, handleEnter, handleLetter,
     handleShuffle,
-    health, healthIncrease, healthDecrease, decrement, letters, score, selected, setCount,
+    health, healthIncrease, healthDecrease, decrement, letters, score, selected,
     shufflePenalty,
     setShowInstructions, setShowResults, showInstructions, showResults,
     startGame, title, wordList, maxHealth, tickRate,
@@ -35,22 +35,7 @@ function App() {
               </h1>
             </div>
 
-            {!gameState && (
-              <div className="mt-4" id="countBar">
-                <input
-                  type="range"
-                  min="8"
-                  max="24"
-                  value={count}
-                  onChange={(e) => setCount(Number(e.target.value))}
-                  className="w-52"
-                />
-                <output
-                  className="grid text-center text-sm text-gray-400">Tile
-                  Count: {count}</output>
-              </div>)}
-
-            <div className="mt-4">
+            <div className="mt-5">
               <TileSet
                 letters={letters}
                 selected={selected}
@@ -71,9 +56,9 @@ function App() {
                 <button onClick={startGame}>
                   START
                 </button>)}
-              {!gameState && gameTime !== 0 && (
+              {!gameState && (
                 <button onClick={() => setShowResults(true)}>
-                  LAST GAME
+                  LEADERBOARD
                 </button>)}
             </div>
 
@@ -90,8 +75,9 @@ function App() {
 
             {showResults && (
               <GameResults
-                gameTime={gameTime}
+                gameId={gameId}
                 score={score}
+                gameTime={gameTime}
                 wordList={wordList}
                 showResults={setShowResults}
               />
