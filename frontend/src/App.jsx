@@ -12,7 +12,7 @@ function App() {
   const {
     count, gameState, gameTime, handleBackspace, handleEnter, handleLetter,
     handleShuffle,
-    health, healthIncrease, healthDecrease, letters, score, selected, setCount,
+    health, healthIncrease, healthDecrease, decrement, letters, score, selected, setCount,
     setShowInstructions, setShowResults, showInstructions, showResults,
     startGame, title, wordList, maxHealth, tickRate,
   } = game;
@@ -81,6 +81,7 @@ function App() {
                 maxHealth={maxHealth}
                 healthIncrease={healthIncrease}
                 healthDecrease={healthDecrease}
+                decrement={decrement}
                 tickRate={tickRate}
               />
             </div>

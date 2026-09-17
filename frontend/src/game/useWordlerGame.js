@@ -18,6 +18,7 @@ import {
 const MAX_HEALTH = 100;
 const TICK_RATE = 1000;
 const INITIAL_TILE_COUNT = 16;
+const INITIAL_DECREMENT = TICK_RATE / 2000;
 
 export function useWordlerGame() {
   const [title, setTitle] = useState('');
@@ -28,6 +29,7 @@ export function useWordlerGame() {
   const [health, setHealth] = useState(MAX_HEALTH);
   const [healthIncrease, setHealthIncrease] = useState(0);
   const [healthDecrease, setHealthDecrease] = useState(0);
+  const [decrement, setDecrement] = useState(INITIAL_DECREMENT);
   const [showResults, setShowResults] = useState(false);
   const [showInstructions, setShowInstructions] = useState(false);
   const [gameTime, setGameTime] = useState(0);
@@ -59,6 +61,10 @@ export function useWordlerGame() {
         setHealth((previous) => Math.min(previous + wordValue, MAX_HEALTH));
         setScore((previous) => previous + wordValue);
         setWordList((previous) => [...previous, {word: title, value: wordValue}]);
+        
+        if (wordValue >= 6) {
+          setDecrement((previous) => Math.max(previous - wordValue / 100, 0.1));
+        }
       }
 
       selected.forEach((index) => flashTile(`tile-${index}`, '#22c55e'));
@@ -100,6 +106,7 @@ export function useWordlerGame() {
     setGameTime(0);
     setGameState(true);
     setHealth(MAX_HEALTH / 2);
+    setDecrement(INITIAL_DECREMENT);
     setScore(0);
     setWordList([]);
   };
@@ -126,12 +133,15 @@ export function useWordlerGame() {
       elapsedTimeRef.current += TICK_RATE;
       setGameTime(elapsedTimeRef.current);
 
-      const decrement = Math.min(
-        TICK_RATE / 2000 + elapsedTimeRef.current / 120000,
-        (TICK_RATE / 1000) * 1.5,
-      );
-      setHealthDecrease(decrement);
-      setHealth((previous) => Math.max(previous - decrement, 0));
+      setDecrement((previous) => {
+        const nextDecrement = Math.min(
+          previous + TICK_RATE / 120000,
+          (TICK_RATE / 1000) * 1.5,
+        );
+        setHealthDecrease(nextDecrement);
+        setHealth((previousHealth) => Math.max(previousHealth - nextDecrement, 0));
+        return nextDecrement;
+      });
     }, TICK_RATE);
 
     return () => clearInterval(healthInterval);
@@ -212,6 +222,7 @@ export function useWordlerGame() {
     health,
     healthIncrease,
     healthDecrease,
+    decrement,
     letters,
     score,
     selected,
