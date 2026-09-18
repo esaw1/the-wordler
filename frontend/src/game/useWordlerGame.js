@@ -14,6 +14,7 @@ import {
   getWordValue,
   resetBag,
 } from '../utils/LetterUtils.jsx';
+import {createTileModifier, getTileScoreMultiplier} from '../utils/TileModifierUtils.js';
 
 const MAX_HEALTH = 100;
 const TICK_RATE = 1000; // 1 second
@@ -21,11 +22,11 @@ const DECREMENT_RATE = 60000; // 1 minute
 const INITIAL_TILE_COUNT = 16;
 const INITIAL_DECREMENT = TICK_RATE / 2000; // 0.5 seconds
 const createGameId = () => window.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`;
-
 export function useWordlerGame() {
   const [title, setTitle] = useState('');
   const [count, setCount] = useState(INITIAL_TILE_COUNT);
   const [letters, setLetters] = useState([]);
+  const [tileModifiers, setTileModifiers] = useState([]);
   const [selected, setSelected] = useState([]);
   const [gameState, setGameState] = useState(false);
   const [health, setHealth] = useState(MAX_HEALTH);
@@ -60,12 +61,24 @@ export function useWordlerGame() {
   const handleEnter = useCallback(() => {
     flashTile('enter');
     const wordValue = getWordValue(title);
+    const wordMultiplier = selected
+      .map((index) => getTileScoreMultiplier(tileModifiers[index]))
+      .reduce((total, multiplier) => total * multiplier, 1);
+    const modifierCount = selected.filter(
+      (index) => getTileScoreMultiplier(tileModifiers[index]) > 1,
+    ).length;
+    const wordScore = wordValue * wordMultiplier;
 
     if (title.length >= 3 && dictionaryUtils(title)) {
       if (gameState) {
-        setHealth((previous) => Math.min(previous + wordValue, MAX_HEALTH));
-        setScore((previous) => previous + wordValue);
-        setWordList((previous) => [...previous, {word: title, value: wordValue}]);
+        setHealth((previous) => Math.min(previous + wordScore, MAX_HEALTH));
+        setScore((previous) => previous + wordScore);
+        setWordList((previous) => [...previous, {
+          word: title,
+          value: wordScore,
+          modifierCount,
+          multiplier: wordMultiplier,
+        }]);
         
         if (wordValue >= 6) {
           setDecrement((previous) => Math.max(previous - wordValue / 100, 0.1));
@@ -73,17 +86,20 @@ export function useWordlerGame() {
       }
 
       selected.forEach((index) => flashTile(`tile-${index}`, '#22c55e'));
-      shakeScreen(wordValue >= 4 ? wordValue : 0);
-      setHealthIncrease(wordValue + Math.random() * 0.01);
+      shakeScreen(wordScore >= 4 ? wordScore : 0);
+      setHealthIncrease(wordScore + Math.random() * 0.01);
       setLetters((previous) => previous.map((letter, index) => (
         selected.includes(index) ? fetchLetter() : letter
+      )));
+      setTileModifiers((previous) => previous.map((modifier, index) => (
+        selected.includes(index) ? createTileModifier() : modifier
       )));
     } else {
       selected.forEach((index) => flashTile(`tile-${index}`, '#ef4444'));
     }
 
     setSelected([]);
-  }, [gameState, selected, title]);
+  }, [gameState, selected, tileModifiers, title]);
 
   const handleShuffle = useCallback(() => {
     flashTile('shuffle');
@@ -92,6 +108,7 @@ export function useWordlerGame() {
       flashTile(`tile-${index}`);
       return fetchLetter();
     }));
+    setTileModifiers((previous) => previous.map(() => createTileModifier()));
     setSelected([]);
     if (gameState === true) {
       setShuffleHealthDecrease(shufflePenalty);
@@ -107,6 +124,7 @@ export function useWordlerGame() {
       flashTile(`tile-${index}`);
       return fetchLetter();
     }));
+    setTileModifiers((previous) => previous.map(() => createTileModifier()));
     setSelected([]);
     setTitle('');
     elapsedTimeRef.current = 0;
@@ -187,6 +205,18 @@ export function useWordlerGame() {
       }
       return previous;
     });
+    setTileModifiers((previous) => {
+      if (count > previous.length) {
+        return [
+          ...previous,
+          ...Array.from({length: count - previous.length}, createTileModifier),
+        ];
+      }
+      if (count < previous.length) {
+        return previous.slice(0, count);
+      }
+      return previous;
+    });
     setSelected((previous) => previous.filter((index) => index < count));
   }, [count]);
 
@@ -235,6 +265,7 @@ export function useWordlerGame() {
     decrement,
     shufflePenalty,
     letters,
+    tileModifiers,
     score,
     selected,
     setCount,

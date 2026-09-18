@@ -52,7 +52,7 @@ export const GameResults = ({gameId, score, gameTime, wordList, showResults}) =>
 
         <h2 className="text-[2rem] font-semibold text-center">ALL-TIME LEADERBOARD</h2>
 
-        <div className="grid grid-cols-1 gap-6 mt-5 text-left sm:grid-cols-[3fr_2fr]">
+        <div className="grid grid-cols-1 gap-5 mt-5 text-left sm:grid-cols-[1fr_1fr]">
           <section>
             <h3 className="text-xl font-semibold border-b pb-1">TOP SCORES</h3>
             <ul className="mt-2 space-y-1">
@@ -78,19 +78,24 @@ export const GameResults = ({gameId, score, gameTime, wordList, showResults}) =>
             <h3 className="text-xl font-semibold border-b pb-1">TOP WORDS</h3>
             <ul className="mt-2 space-y-1">
               {leaderboard.words.length === 0 && <li className="text-gray-400">No words yet</li>}
-              {leaderboard.words.map(({word, value, gameId: wordGameId}, index) => (
+              {leaderboard.words.map(({word, value, multiplier, gameId: wordGameId}, index) => (
                 <li
                   key={`${wordGameId}-${word}-${index}`}
                   className={`leaderboard-row grid grid-cols-[1fr_auto] ${wordGameId === gameId ? 'current-run' : ''}`}
                 >
-                  <span className="">
+                  <span>
                     {word.split('').map((letter, letterIndex) => (
                       <span key={`${word}-${letterIndex}`} style={{color: getLetterColor(letter)}}>
                         {letter}
                       </span>
                     ))}
                   </span>
-                  <span className="text-gray-400">+{value}</span>
+                  <span className="flex items-baseline justify-end gap-1 text-right">
+                    <span className="text-xs text-red-600">
+                      {multiplier !== undefined && multiplier !== 1 ? `(x${multiplier})` : null}
+                    </span>
+                    <span className="text-gray-400">+{value}</span>
+                  </span>
                 </li>
               ))}
             </ul>

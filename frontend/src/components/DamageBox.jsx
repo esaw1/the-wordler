@@ -1,9 +1,13 @@
 import React, {useEffect, useRef} from 'react';
 import {getWordValue} from "../utils/LetterUtils.jsx";
 import {getRandomDirections} from "../utils/AnimationUtils.jsx";
+import {getTileScoreMultiplier} from "../utils/TileModifierUtils.js";
 
-export const DamageBox = ({ word }) => {
-  const value = getWordValue(word);
+export const DamageBox = ({ word, tileModifiers, selected }) => {
+  const wordMultiplier = selected
+    .map((index) => getTileScoreMultiplier(tileModifiers[index]))
+    .reduce((total, multiplier) => total * multiplier, 1);
+  const value = getWordValue(word) * wordMultiplier;
   const el = document.getElementById("damage-box");
   const randomDirections = getRandomDirections();
 
@@ -46,6 +50,9 @@ export const DamageBox = ({ word }) => {
         transition: "font-size 0.2s ease-out",
       }}
     >
+      {wordMultiplier > 1 && (
+        <span className="damage-multiplier">(x{wordMultiplier})</span>
+      )}
       {value}
     </div>
   );

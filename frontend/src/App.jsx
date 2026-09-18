@@ -12,7 +12,7 @@ function App() {
   const {
     count, gameState, gameId, gameTime, handleBackspace, handleEnter, handleLetter,
     handleShuffle,
-    health, healthIncrease, healthDecrease, shuffleHealthDecrease, decrement, letters, score, selected,
+    health, healthIncrease, healthDecrease, shuffleHealthDecrease, decrement, letters, tileModifiers, score, selected,
     shufflePenalty,
     setShowInstructions, setShowResults, showInstructions, showResults,
     startGame, title, wordList, maxHealth, tickRate,
@@ -25,19 +25,28 @@ function App() {
         element={
           <>
             <div className="grid w-[25vh] h-[25vh] place-content-center">
-              <DamageBox word={title}/>
+              <DamageBox word={title} tileModifiers={tileModifiers} selected={selected}/>
             </div>
 
             <div className="min-w-[30vh] place-content-start">
               <h1
                 className="justify-center text-center min-h-[5vw] font-semibold bg-inherit text-[4.5vw] border-b">
-                {title}
+                {title.split('').map((letter, index) => {
+                  const modifier = tileModifiers[selected[index]];
+
+                  return (
+                    <span key={`${letter}-${index}`} style={modifier?.color ? {color: modifier.color} : undefined}>
+                      {letter}
+                    </span>
+                  );
+                })}
               </h1>
             </div>
 
             <div className="mt-5">
               <TileSet
                 letters={letters}
+                tileModifiers={tileModifiers}
                 selected={selected}
                 handleLetter={handleLetter}
                 handleBackspace={handleBackspace}
