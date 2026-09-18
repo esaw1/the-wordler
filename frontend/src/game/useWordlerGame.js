@@ -35,6 +35,7 @@ export function useWordlerGame() {
   const [shuffleHealthDecrease, setShuffleHealthDecrease] = useState(0);
   const [decrement, setDecrement] = useState(INITIAL_DECREMENT);
   const [shufflePenalty, setShufflePenalty] = useState(5);
+  const [shuffleVersion, setShuffleVersion] = useState(0);
   const [showResults, setShowResults] = useState(false);
   const [showInstructions, setShowInstructions] = useState(false);
   const [gameTime, setGameTime] = useState(0);
@@ -104,8 +105,9 @@ export function useWordlerGame() {
   const handleShuffle = useCallback(() => {
     flashTile('shuffle');
     resetBag();
+    setShuffleVersion((previous) => previous + 1);
     setLetters((previous) => previous.map((letter, index) => {
-      flashTile(`tile-${index}`);
+      flashTile(`tile-${index}`, '#6891b8');
       return fetchLetter();
     }));
     setTileModifiers((previous) => previous.map(() => createTileModifier()));
@@ -120,10 +122,6 @@ export function useWordlerGame() {
   const startGame = () => {
     setGameId(createGameId());
     resetBag();
-    setLetters((previous) => previous.map((letter, index) => {
-      flashTile(`tile-${index}`);
-      return fetchLetter();
-    }));
     setTileModifiers((previous) => previous.map(() => createTileModifier()));
     setSelected([]);
     setTitle('');
@@ -133,6 +131,11 @@ export function useWordlerGame() {
     setHealth(MAX_HEALTH / 2);
     setDecrement(INITIAL_DECREMENT);
     setShufflePenalty(5);
+    setShuffleVersion((previous) => previous + 1);
+    setLetters((previous) => previous.map((letter, index) => {
+      flashTile(`tile-${index}`, '#6891b8');
+      return fetchLetter();
+    }));
     setScore(0);
     setWordList([]);
   };
@@ -178,6 +181,7 @@ export function useWordlerGame() {
       flashBackground();
       setGameState(false);
       setSelected([]);
+      setShuffleVersion(0);
       setHealth(MAX_HEALTH);
       setShowResults(true);
     }
@@ -264,6 +268,7 @@ export function useWordlerGame() {
     shuffleHealthDecrease,
     decrement,
     shufflePenalty,
+    shuffleVersion,
     letters,
     tileModifiers,
     score,

@@ -1,10 +1,61 @@
-import React from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import { getLetterColor } from "../utils/LetterUtils.jsx";
 
-const TileSet = ({ letters, tileModifiers, selected, handleLetter, handleBackspace, handleEnter, handleShuffle, shufflePenalty }) => {
+const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+const TileSet = ({ letters, tileModifiers, selected, handleLetter, handleBackspace, handleEnter, handleShuffle, shufflePenalty, shuffleVersion }) => {
+  const [displayLetters, setDisplayLetters] = useState(letters);
+  const timersRef = useRef([]);
+  const previousShuffleVersionRef = useRef(shuffleVersion);
+
+  useEffect(() => {
+    const shouldAnimate = shuffleVersion > previousShuffleVersionRef.current;
+    previousShuffleVersionRef.current = shuffleVersion;
+
+    timersRef.current.forEach((timer) => {
+      clearInterval(timer.interval);
+      clearTimeout(timer.timeout);
+    });
+    timersRef.current = [];
+
+    if (!shouldAnimate) {
+      setDisplayLetters(letters);
+      return undefined;
+    }
+
+    setDisplayLetters(letters.map(() => ALPHABET[Math.floor(Math.random() * ALPHABET.length)]));
+
+    letters.forEach((letter, index) => {
+      const duration = 300 + Math.random() * 300;
+      const interval = setInterval(() => {
+        setDisplayLetters((previous) => previous.map((value, tileIndex) => (
+          tileIndex === index
+            ? ALPHABET[Math.floor(Math.random() * ALPHABET.length)]
+            : value
+        )));
+      }, 40);
+      const timeout = setTimeout(() => {
+        clearInterval(interval);
+        setDisplayLetters((previous) => previous.map((value, tileIndex) => (
+          tileIndex === index ? letter : value
+        )));
+      }, duration);
+
+      timersRef.current.push({interval, timeout});
+    });
+
+    return () => {
+      timersRef.current.forEach((timer) => {
+        clearInterval(timer.interval);
+        clearTimeout(timer.timeout);
+      });
+      timersRef.current = [];
+    };
+  }, [letters, shuffleVersion]);
+
   return (
     <div className="flex flex-wrap relative justify-center max-w-[220px] gap-2">
-      {letters.map((letter, index) => (
+      {displayLetters.map((letter, index) => (
         <div
           key={index}
           id={"tile-" + index.toString()}
@@ -13,7 +64,7 @@ const TileSet = ({ letters, tileModifiers, selected, handleLetter, handleBackspa
             handleLetter(letter, index);
           }}
         >
-          {letter}
+          <span className="tile-letter">{letter}</span>
           {tileModifiers[index] && (
             <span
               className="tile-modifier"
