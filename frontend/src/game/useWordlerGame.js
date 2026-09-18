@@ -80,8 +80,8 @@ export function useWordlerGame() {
           multiplier: wordMultiplier,
         }]);
         
-        if (wordValue >= 6) {
-          setDecrement((previous) => Math.max(previous - wordValue / 100, 0.1));
+        if (wordScore >= 6) {
+          setDecrement((previous) => Math.max(previous - wordScore / 100, 0.1));
         }
       }
 
