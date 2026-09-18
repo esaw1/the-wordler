@@ -1,7 +1,7 @@
 export const createTileModifier = () => {
   const roll = Math.random();
 
-  if (roll < 0.04) {
+  if (roll < 0.03) {
     return {
       type: 'scoreMultiplier',
       value: 2,
