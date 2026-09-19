@@ -50,7 +50,7 @@ export const GameResults = ({gameId, score, gameTime, wordList, showResults}) =>
           ✕
         </div>
 
-        <h2 className="text-[2rem] font-semibold text-center">ALL-TIME LEADERBOARD</h2>
+        <h2 className="text-[2rem] font-semibold text-center">LEADERBOARD</h2>
 
         <div className="grid grid-cols-1 gap-5 mt-5 text-left sm:grid-cols-[1fr_1fr]">
           <section>

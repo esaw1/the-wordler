@@ -60,7 +60,7 @@ const TileSet = ({ letters, tileModifiers, selected, handleLetter, handleBackspa
         <div
           key={index}
           id={"tile-" + index.toString()}
-          className={`relative tile flashing ${selected.includes(index) ? "selected" : ""} ${isTileLocked(index, tileModifiers) ? "locked" : ""}`}
+          className={`relative tile ${selected.includes(index) ? "selected" : ""} ${isTileLocked(index, tileModifiers) ? "locked" : ""}`}
           onClick={() => {
             handleLetter(letter, index);
           }}
@@ -85,7 +85,7 @@ const TileSet = ({ letters, tileModifiers, selected, handleLetter, handleBackspa
       ))}
       <div
         id="backspace"
-        className="tile flashing absolute top-0 -right-16"
+        className="tile absolute top-0 -right-16"
         onClick={() => {
           handleBackspace();
         }}
@@ -94,7 +94,7 @@ const TileSet = ({ letters, tileModifiers, selected, handleLetter, handleBackspa
       </div>
       <div
         id="enter"
-        className="tile flashing absolute bottom-0 -right-16"
+        className="tile absolute bottom-0 -right-16"
         onClick={() => {
           handleEnter();
         }}
@@ -103,7 +103,7 @@ const TileSet = ({ letters, tileModifiers, selected, handleLetter, handleBackspa
       </div>
       <div
         id="shuffle"
-        className="tile flashing absolute bottom-14 -right-16"
+        className="tile absolute bottom-14 -right-16"
         onClick={() => {
           handleShuffle();
         }}

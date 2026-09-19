@@ -14,7 +14,9 @@ export const flashTile = (id, startColor = '#6366f1', endColor) => {
     } else {
       tile.style.setProperty('--flash-end', endColor);
     }
-    refreshAnimation(id);
+    tile.style.animation = 'none';
+    tile.offsetHeight;
+    tile.style.animation = 'flash 0.6s ease-out';
   }
 }
 

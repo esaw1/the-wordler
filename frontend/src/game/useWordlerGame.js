@@ -20,6 +20,12 @@ import {
   getTileScoreAdder,
   isTileLocked,
 } from '../utils/TileModifierUtils.js';
+import {
+  getAchievements,
+  getSurvivalAchievementIds,
+  getWordAchievementIds,
+  unlockAchievements as saveAchievements,
+} from '../utils/AchievementUtils.js';
 
 const MAX_HEALTH = 100;
 const TICK_RATE = 1000; // 1 second
@@ -43,11 +49,30 @@ export function useWordlerGame() {
   const [shuffleVersion, setShuffleVersion] = useState(0);
   const [showResults, setShowResults] = useState(false);
   const [showInstructions, setShowInstructions] = useState(false);
+  const [showAchievements, setShowAchievements] = useState(false);
+  const achievementsRef = useRef(null);
+  const [achievements, setAchievements] = useState(() => {
+    const initialAchievements = getAchievements();
+    achievementsRef.current = initialAchievements;
+    return initialAchievements;
+  });
   const [gameTime, setGameTime] = useState(0);
   const [score, setScore] = useState(0);
   const [wordList, setWordList] = useState([]);
   const [gameId, setGameId] = useState(null);
   const elapsedTimeRef = useRef(0);
+
+  const unlockAchievements = useCallback((achievementIds) => {
+    const newAchievementIds = achievementIds.filter((achievementId) => (
+      !achievementsRef.current.some(({id, unlocked}) => id === achievementId && unlocked)
+    ));
+
+    if (newAchievementIds.length > 0) {
+      const updatedAchievements = saveAchievements(newAchievementIds);
+      achievementsRef.current = updatedAchievements;
+      setAchievements(updatedAchievements);
+    }
+  }, []);
 
   const handleLetter = useCallback((letter, index) => {
     if (isTileLocked(index, tileModifiers)) {
@@ -84,6 +109,7 @@ export function useWordlerGame() {
 
     if (title.length >= 3 && dictionaryUtils(title)) {
       if (gameState) {
+        unlockAchievements(getWordAchievementIds(wordScore));
         setHealth((previous) => Math.min(previous + wordScore, MAX_HEALTH));
         setScore((previous) => previous + wordScore);
         setWordList((previous) => [...previous, {
@@ -117,7 +143,7 @@ export function useWordlerGame() {
     }
 
     setSelected([]);
-  }, [count, gameState, selected, tileModifiers, title]);
+  }, [count, gameState, selected, tileModifiers, title, unlockAchievements]);
 
   const handleShuffle = useCallback(() => {
     flashTile('shuffle');
@@ -172,6 +198,7 @@ export function useWordlerGame() {
   const endGame = useCallback(() => {
     setShowInstructions(false);
     setShowResults(false);
+    setShowAchievements(false);
     setSelected([]);
     setGameState((previous) => {
       if (previous) {
@@ -190,6 +217,7 @@ export function useWordlerGame() {
     const healthInterval = setInterval(() => {
       elapsedTimeRef.current += TICK_RATE;
       setGameTime(elapsedTimeRef.current);
+      unlockAchievements(getSurvivalAchievementIds(elapsedTimeRef.current / 1000));
 
       setDecrement((previous) => {
         const nextDecrement = Math.min(
@@ -203,7 +231,7 @@ export function useWordlerGame() {
     }, TICK_RATE);
 
     return () => clearInterval(healthInterval);
-  }, [gameState]);
+  }, [gameState, unlockAchievements]);
 
   useEffect(() => {
     if (gameState && health <= 0) {
@@ -220,6 +248,12 @@ export function useWordlerGame() {
     const startup = async () => {
       await loadDictionary();
       setTitle(randomWord().toUpperCase());
+
+      setShuffleVersion((previous) => previous + 1);
+      setLetters((previous) => previous.map((letter, index) => {
+        flashTile(`tile-${index}`, '#6891b8');
+        return fetchLetter();
+      }));
     };
 
     void startup();
@@ -316,8 +350,11 @@ export function useWordlerGame() {
     setCount,
     setShowInstructions,
     setShowResults,
+    setShowAchievements,
+    showAchievements,
     showInstructions,
     showResults,
+    achievements,
     startGame,
     title,
     wordList,

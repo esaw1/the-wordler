@@ -61,7 +61,7 @@ export const Instructions = ({ showInstructions }) => {
         </div>
 
         <div className="instruction-section">
-          <h2 className="instruction-header">HOW TO PLAY</h2>
+          <h2 className="instruction-header">GAMEPLAY</h2>
           <div className="mt-2 grid grid-flow-col gap-4">
           <div className="text-right">
             <p>Select tiles to form a word!</p>
@@ -73,7 +73,7 @@ export const Instructions = ({ showInstructions }) => {
               <div
                 key={index}
                 id={"tile-example-" + index.toString()}
-                className={`relative tile flashing ${selected.includes(letter) ? "selected" : ""}`}
+                className={`relative tile ${selected.includes(letter) ? "selected" : ""}`}
                 onClick={() => {
                   handleExampleLetter(letter, index);
                 }}
@@ -91,11 +91,7 @@ export const Instructions = ({ showInstructions }) => {
           <p
             className="w-[3rem] self-end font-semibold text-3xl border-b">{selected.join('')}</p>
           </div>
-        </div>
-
-        <div className="instruction-section 4 mt-5">
-          <h2 className="instruction-header">GAMEPLAY</h2>
-          <p className="mt-2">
+          <p className="mt-4">
           Your health ticks down faster and faster...
           </p>
           <p className="italic text-[1.2rem]">
@@ -106,7 +102,7 @@ export const Instructions = ({ showInstructions }) => {
             If you're stuck, you can <span style={{ color: "#72a3b9" }}>shuffle</span> the tiles, with an increasing cost to your health.
           </p>
           <div
-            className="tile relative flashing shrink-0"
+            className="tile relative shrink-0"
             id="example-shuffle"
             role="button"
             tabIndex="0"

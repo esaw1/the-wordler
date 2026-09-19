@@ -82,7 +82,8 @@ button:focus-visible {
   }
 
   .instruction-panel,
-  .results-panel {
+  .results-panel,
+  .achievement-panel {
     --panel-background: #d1d2d4;
     --panel-border: #6d6f72;
   }
@@ -187,7 +188,8 @@ button:focus-visible {
 }
 
 .instruction-panel,
-.results-panel {
+.results-panel,
+.achievement-panel {
   background-color: var(--panel-background);
   border-color: var(--panel-border);
 }
@@ -198,6 +200,28 @@ button:focus-visible {
 
 .results-panel {
   box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
+}
+
+.achievement-panel {
+  box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.achievement-row {
+  border-color: var(--panel-border);
+  background-color: var(--section-background);
+}
+
+.achievement-unlocked {
+  border-color: #72a3b9;
+}
+
+.achievement-unlocked h3,
+.achievement-unlocked span {
+  color: #72a3b9;
+}
+
+.achievement-locked {
+  opacity: 0.65;
 }
 
 .leaderboard-row {

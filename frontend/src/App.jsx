@@ -6,15 +6,17 @@ import {DamageBox} from "./components/DamageBox.jsx";
 import {HealthBar} from "./components/HealthBar.jsx";
 import {GameResults} from "./components/GameResults.jsx";
 import {Instructions} from "./components/InstructionBox.jsx";
+import {Achievements} from "./components/AchievementBox.jsx";
 
 function App() {
   const game = useWordlerGame();
   const {
-    count, gameState, gameId, gameTime, handleBackspace, handleEnter, handleLetter,
+    gameState, gameId, gameTime, handleBackspace, handleEnter, handleLetter,
     handleShuffle,
     health, healthIncrease, healthDecrease, shuffleHealthDecrease, decrement, letters, tileModifiers, score, selected,
     shufflePenalty, shuffleVersion,
-    setShowInstructions, setShowResults, showInstructions, showResults,
+    setShowInstructions, setShowResults, setShowAchievements,
+    showAchievements, showInstructions, showResults, achievements,
     startGame, title, wordList, maxHealth, tickRate,
   } = game;
 
@@ -69,7 +71,7 @@ function App() {
               />
             </div>
 
-            <div className="grid grid-flow-col mt-5 gap-2">
+            <div className="grid grid-cols-3 mt-5 gap-2">
               {!gameState && (
                 <button onClick={() => setShowInstructions(true)}>
                   HOW TO PLAY
@@ -81,6 +83,10 @@ function App() {
               {!gameState && (
                 <button onClick={() => setShowResults(true)}>
                   LEADERBOARD
+                </button>)}
+              {!gameState && (
+                <button className="col-span-3 justify-self-center" onClick={() => setShowAchievements(true)}>
+                  ACHIEVEMENTS
                 </button>)}
             </div>
 
@@ -95,6 +101,9 @@ function App() {
             )}
             {showInstructions && (
               <Instructions showInstructions={setShowInstructions} />
+            )}
+            {showAchievements && (
+              <Achievements achievements={achievements} showAchievements={setShowAchievements} />
             )}
           </>
         }
