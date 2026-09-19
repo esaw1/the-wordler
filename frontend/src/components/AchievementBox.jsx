@@ -32,7 +32,7 @@ export const Achievements = ({achievements, showAchievements}) => {
       onClick={closeAchievements}
     >
       <div
-        className={`achievement-panel relative max-h-[80vh] w-full overflow-y-auto border-t p-5 text-center transition-[transform] duration-[250ms] ease-in-out ${isVisible && !isClosing ? 'translate-y-0' : 'translate-y-full'}`}
+        className={`achievement-panel relative max-h-[80vh] w-full max-w-[64rem] overflow-y-auto border-l border-r border-t p-5 text-center transition-[transform] duration-[250ms] ease-in-out ${isVisible && !isClosing ? 'translate-y-0' : 'translate-y-full'}`}
         onClick={(event) => event.stopPropagation()}
       >
         <button
