@@ -14,7 +14,11 @@ import {
   getWordValue,
   resetBag,
 } from '../utils/LetterUtils.jsx';
-import {createTileModifier, getTileScoreMultiplier} from '../utils/TileModifierUtils.js';
+import {
+  createTileModifier,
+  getTileScoreMultiplier,
+  isTileLocked,
+} from '../utils/TileModifierUtils.js';
 
 const MAX_HEALTH = 100;
 const TICK_RATE = 1000; // 1 second
@@ -45,6 +49,10 @@ export function useWordlerGame() {
   const elapsedTimeRef = useRef(0);
 
   const handleLetter = useCallback((letter, index) => {
+    if (isTileLocked(index, tileModifiers)) {
+      return;
+    }
+
     if (selected.includes(index)) {
       setSelected((previous) => previous.filter((tileIndex) => tileIndex !== index));
       flashTile(`tile-${index}`);
@@ -52,7 +60,7 @@ export function useWordlerGame() {
       flashTile(`tile-${index}`, undefined, '#4f46e5');
       setSelected((previous) => [...previous, index]);
     }
-  }, [count, selected, title]);
+  }, [count, selected, tileModifiers, title]);
 
   const handleBackspace = useCallback(() => {
     flashTile('backspace');
@@ -92,9 +100,13 @@ export function useWordlerGame() {
       setLetters((previous) => previous.map((letter, index) => (
         selected.includes(index) ? fetchLetter() : letter
       )));
-      setTileModifiers((previous) => previous.map((modifier, index) => (
-        selected.includes(index) ? createTileModifier() : modifier
-      )));
+      setTileModifiers((previous) => {
+        const next = [...previous];
+        selected.forEach((index) => {
+          next[index] = createTileModifier(next, index);
+        });
+        return next;
+      });
     } else {
       selected.forEach((index) => flashTile(`tile-${index}`, '#ef4444'));
     }
@@ -110,7 +122,13 @@ export function useWordlerGame() {
       flashTile(`tile-${index}`, '#6891b8');
       return fetchLetter();
     }));
-    setTileModifiers((previous) => previous.map(() => createTileModifier()));
+    setTileModifiers((previous) => {
+      const next = [...previous];
+      next.forEach((_, index) => {
+        next[index] = createTileModifier(next, index);
+      });
+      return next;
+    });
     setSelected([]);
     if (gameState === true) {
       setShuffleHealthDecrease(shufflePenalty);
@@ -122,7 +140,13 @@ export function useWordlerGame() {
   const startGame = () => {
     setGameId(createGameId());
     resetBag();
-    setTileModifiers((previous) => previous.map(() => createTileModifier()));
+    setTileModifiers((previous) => {
+      const next = [...previous];
+      next.forEach((_, index) => {
+        next[index] = createTileModifier(next, index);
+      });
+      return next;
+    });
     setSelected([]);
     setTitle('');
     elapsedTimeRef.current = 0;
@@ -211,10 +235,12 @@ export function useWordlerGame() {
     });
     setTileModifiers((previous) => {
       if (count > previous.length) {
-        return [
-          ...previous,
-          ...Array.from({length: count - previous.length}, createTileModifier),
-        ];
+        const next = [...previous];
+        while (next.length < count) {
+          const index = next.length;
+          next.push(createTileModifier(next, index));
+        }
+        return next;
       }
       if (count < previous.length) {
         return previous.slice(0, count);
@@ -238,11 +264,20 @@ export function useWordlerGame() {
       } else if (event.key === 'Escape') {
         setSelected([]);
       } else {
-        let index = letters.indexOf(pressedKey);
-        while (index !== -1 && selected.includes(index)) {
-          index = letters.indexOf(pressedKey, index + 1);
-        }
-        if (index !== -1) {
+        const matchingIndexes = letters
+          .map((letter, index) => ({letter, index}))
+          .filter(({letter, index}) => (
+            letter === pressedKey
+              && !selected.includes(index)
+              && !isTileLocked(index, tileModifiers)
+          ))
+          .sort(({index: firstIndex}, {index: secondIndex}) => (
+            Number(Boolean(tileModifiers[secondIndex]))
+              - Number(Boolean(tileModifiers[firstIndex]))
+              || firstIndex - secondIndex
+          ));
+        const index = matchingIndexes[0]?.index;
+        if (index !== undefined) {
           handleLetter(letters[index], index);
         }
       }
@@ -250,7 +285,7 @@ export function useWordlerGame() {
 
     document.addEventListener('keydown', handleKeyPress);
     return () => document.removeEventListener('keydown', handleKeyPress);
-  }, [count, endGame, gameState, handleBackspace, handleEnter, handleLetter, handleShuffle, letters, selected, title]);
+  }, [count, endGame, gameState, handleBackspace, handleEnter, handleLetter, handleShuffle, letters, selected, tileModifiers, title]);
 
   return {
     count,

@@ -1,5 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import { getLetterColor } from "../utils/LetterUtils.jsx";
+import {isTileLocked} from "../utils/TileModifierUtils.js";
 
 const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
@@ -59,7 +60,7 @@ const TileSet = ({ letters, tileModifiers, selected, handleLetter, handleBackspa
         <div
           key={index}
           id={"tile-" + index.toString()}
-          className={`relative tile flashing ${selected.includes(index) ? "selected" : ""}`}
+          className={`relative tile flashing ${selected.includes(index) ? "selected" : ""} ${isTileLocked(index, tileModifiers) ? "locked" : ""}`}
           onClick={() => {
             handleLetter(letter, index);
           }}
