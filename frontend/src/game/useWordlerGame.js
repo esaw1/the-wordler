@@ -108,7 +108,7 @@ export function useWordlerGame() {
       setTileModifiers((previous) => {
         const next = [...previous];
         selected.forEach((index) => {
-          next[index] = createTileModifier(next, index);
+          next[index] = createTileModifier(next, index, count);
         });
         return next;
       });
@@ -117,7 +117,7 @@ export function useWordlerGame() {
     }
 
     setSelected([]);
-  }, [gameState, selected, tileModifiers, title]);
+  }, [count, gameState, selected, tileModifiers, title]);
 
   const handleShuffle = useCallback(() => {
     flashTile('shuffle');
@@ -130,7 +130,7 @@ export function useWordlerGame() {
     setTileModifiers((previous) => {
       const next = [...previous];
       next.forEach((_, index) => {
-        next[index] = createTileModifier(next, index);
+        next[index] = createTileModifier(next, index, count);
       });
       return next;
     });
@@ -140,15 +140,15 @@ export function useWordlerGame() {
       setHealth((previous) => Math.max(previous - shufflePenalty, 0));
       setShufflePenalty((previous) => previous + 3);
     }
-  }, [gameState, shufflePenalty]);
+  }, [count, gameState, shufflePenalty]);
 
   const startGame = () => {
     setGameId(createGameId());
     resetBag();
-    setTileModifiers((previous) => {
-      const next = [...previous];
+    setTileModifiers(() => {
+      const next = Array.from({length: count});
       next.forEach((_, index) => {
-        next[index] = createTileModifier(next, index);
+        next[index] = createTileModifier(next, index, count);
       });
       return next;
     });
@@ -243,7 +243,7 @@ export function useWordlerGame() {
         const next = [...previous];
         while (next.length < count) {
           const index = next.length;
-          next.push(createTileModifier(next, index));
+          next.push(createTileModifier(next, index, count));
         }
         return next;
       }

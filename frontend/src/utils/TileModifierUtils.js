@@ -1,6 +1,6 @@
 const X2_CHANCE = 0.03;
 const X3_CHANCE = 0.005;
-const COLUMN_LOCK_CHANCE = 0.03;
+const LOCK_CHANCE = 0.03;
 const PLUS1_CHANCE = 0.08;
 const PLUS2_CHANCE = 0.04;
 
@@ -34,11 +34,11 @@ export const TILE_MODIFIER_DEFINITIONS = [
     description: 'Add 2 points',
   },
   {
-    type: 'columnLock',
+    type: 'lock',
     value: 1,
     label: '',
     color: '#f5f5f5',
-    description: 'Column lock',
+    description: 'Locks adjacent tiles',
   },
 ];
 
@@ -48,7 +48,12 @@ const getModifierDefinition = (type, value) => (
   ))
 );
 
-export const createTileModifier = (existingModifiers = [], index = -1, columnCount = 4) => {
+export const createTileModifier = (
+  existingModifiers = [],
+  index = -1,
+  tileCount = existingModifiers.length,
+  columnCount = 4,
+) => {
   const roll = Math.random();
   let totalChance = 0;
 
@@ -57,15 +62,31 @@ export const createTileModifier = (existingModifiers = [], index = -1, columnCou
     return getModifierDefinition('scoreMultiplier', 2);
   }
 
-  const hasColumnLock = existingModifiers.some((modifier, modifierIndex) => (
-    modifierIndex !== index
-      && modifier?.type === 'columnLock'
-      && modifierIndex % columnCount === index % columnCount
-  ));
+  const isLocked = isTileLocked(index, existingModifiers);
 
-  totalChance += COLUMN_LOCK_CHANCE;
-  if (roll < totalChance && !hasColumnLock) {
-    return getModifierDefinition('columnLock', 1);
+  totalChance += LOCK_CHANCE;
+  if (roll < totalChance && !isLocked) {
+    const row = Math.floor(index / columnCount);
+    const column = index % columnCount;
+    const adjacentIndexes = [
+      column > 0 ? index - 1 : -1,
+      column < columnCount - 1 ? index + 1 : -1,
+      row > 0 ? index - columnCount : -1,
+      index + columnCount < tileCount ? index + columnCount : -1,
+    ].filter((tileIndex) => tileIndex >= 0 && tileIndex < tileCount);
+    const availableIndexes = adjacentIndexes
+      .filter((tileIndex) => (
+        existingModifiers[tileIndex]?.type !== 'lock'
+          && !isTileLocked(tileIndex, existingModifiers)
+      ));
+    const lockedIndexes = availableIndexes;
+
+    if (lockedIndexes.length >= 2) {
+      return {
+        ...getModifierDefinition('lock', 1),
+        lockedIndexes,
+      };
+    }
   }
 
   totalChance += X3_CHANCE;
@@ -94,10 +115,10 @@ export const getTileScoreAdder = (modifier) => (
   modifier?.type === 'scoreAdder' ? modifier.value : 0
 );
 
-export const isTileLocked = (index, tileModifiers, columnCount = 4) => (
+export const isTileLocked = (index, tileModifiers = []) => (
   tileModifiers.some((modifier, modifierIndex) => (
-    modifier?.type === 'columnLock'
-      && modifierIndex % columnCount === index % columnCount
+    modifier?.type === 'lock'
+      && modifier.lockedIndexes?.includes(index)
       && modifierIndex !== index
   ))
 );
