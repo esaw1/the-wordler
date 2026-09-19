@@ -1,13 +1,19 @@
 import React, {useEffect, useRef} from 'react';
 import {getWordValue} from "../utils/LetterUtils.jsx";
 import {getRandomDirections} from "../utils/AnimationUtils.jsx";
-import {getTileScoreMultiplier} from "../utils/TileModifierUtils.js";
+import {
+  getTileScoreAdder,
+  getTileScoreMultiplier,
+} from "../utils/TileModifierUtils.js";
 
 export const DamageBox = ({ word, tileModifiers, selected }) => {
   const wordMultiplier = selected
     .map((index) => getTileScoreMultiplier(tileModifiers[index]))
     .reduce((total, multiplier) => total * multiplier, 1);
-  const value = getWordValue(word) * wordMultiplier;
+  const wordAdder = selected
+    .map((index) => getTileScoreAdder(tileModifiers[index]))
+    .reduce((total, adder) => total + adder, 0);
+  const value = (getWordValue(word) + wordAdder) * wordMultiplier;
   const el = document.getElementById("damage-box");
   const randomDirections = getRandomDirections();
 
@@ -50,10 +56,18 @@ export const DamageBox = ({ word, tileModifiers, selected }) => {
         transition: "font-size 0.2s ease-out",
       }}
     >
-      {wordMultiplier > 1 && (
-        <span className="damage-multiplier">(x{wordMultiplier})</span>
+      {(wordAdder > 0 || wordMultiplier > 1) && (
+        <span className="damage-modifiers">
+          {wordAdder > 0 && (
+            <span className="damage-adder">(+{wordAdder})</span>
+          )}
+          {wordMultiplier > 1 && (
+            <span className="damage-multiplier">(x{wordMultiplier})</span>
+          )}
+        </span>
       )}
+
       {value}
     </div>
   );
-};
+}

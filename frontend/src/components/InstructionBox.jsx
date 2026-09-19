@@ -1,6 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react'
 import {flashTile} from "../utils/AnimationUtils.jsx";
 import {getLetterColor, getLetterWeight} from "../utils/LetterUtils.jsx";
+import {TILE_MODIFIER_DEFINITIONS} from "../utils/TileModifierUtils.js";
 
 export const Instructions = ({ showInstructions }) => {
   const [selected, setSelected] = useState([]);
@@ -28,10 +29,10 @@ export const Instructions = ({ showInstructions }) => {
     closeTimeout.current = setTimeout(() => showInstructions(false), 250);
   };
 
-  const handleLetter = (letter, index) => {
+  const handleExampleLetter = (letter, index) => {
     if (!selected.includes(letter)) {
       setSelected((prevState) => [...prevState, letter]);
-      flashTile("tile-example-" + index, undefined);
+      flashTile("tile-example-" + index, undefined, '#4f46e5');
     } else {
       setSelected((prevState) => prevState.filter((l) => l !== letter));
       flashTile("tile-example-" + index);
@@ -60,7 +61,7 @@ export const Instructions = ({ showInstructions }) => {
         </div>
 
         <div className="instruction-section">
-          <h2 className="text-[2rem] font-semibold">HOW TO PLAY</h2>
+          <h2 className="instruction-header">HOW TO PLAY</h2>
           <div className="mt-2 grid grid-flow-col gap-4">
           <div className="text-right">
             <p>Select tiles to form a word!</p>
@@ -74,7 +75,7 @@ export const Instructions = ({ showInstructions }) => {
                 id={"tile-example-" + index.toString()}
                 className={`relative tile flashing ${selected.includes(letter) ? "selected" : ""}`}
                 onClick={() => {
-                  handleLetter(letter, index);
+                  handleExampleLetter(letter, index);
                 }}
               >
                 {letter}
@@ -93,7 +94,7 @@ export const Instructions = ({ showInstructions }) => {
         </div>
 
         <div className="instruction-section 4 mt-5">
-          <h2 className="text-[2rem] font-semibold">GAMEPLAY</h2>
+          <h2 className="instruction-header">GAMEPLAY</h2>
           <p className="mt-2">
           Your health ticks down faster and faster...
           </p>
@@ -122,7 +123,7 @@ export const Instructions = ({ showInstructions }) => {
         </div>
 
         <div className="instruction-section mt-5">
-          <h2 className="text-[2rem] font-semibold">SCORING</h2>
+          <h2 className="instruction-header">SCORING</h2>
           <p className="mt-2">Each letter has an assigned color and
           weight:</p>
         <div className="mt-2 justify-self-center w-[15%]">
@@ -150,6 +151,34 @@ export const Instructions = ({ showInstructions }) => {
           Largely based off of the word game <a
           href="https://en.wikipedia.org/wiki/Bookworm_(video_game)" target="_blank">Bookworm</a>
           </p>
+        </div>
+
+        <div className="instruction-section mt-5">
+          <h2 className="instruction-header">TILE MODIFIERS</h2>
+          <p className="mt-2">Some tiles have special modifiers that can affect your score!</p>
+          <div className="mt-4 flex flex-wrap justify-center gap-4">
+            {TILE_MODIFIER_DEFINITIONS.map((modifier, index) => (
+              <div key={modifier.description} className="flex w-14 flex-col items-center gap-1">
+                <div className={`tile relative`}>
+                  <span>{String.fromCharCode(65 + index)}</span>
+                  <span
+                    className="tile-modifier"
+                    style={{'--modifier-color': modifier.color}}
+                  >
+                    <span className="tile-modifier-label">{modifier.label}</span>
+                  </span>
+                </div>
+                <span className="text-xs text-gray-400">{modifier.description}</span>
+              </div>
+            ))}
+            <div className="flex w-14 flex-col items-center gap-1">
+              <div className="tile locked relative">
+                <span>F</span>
+              </div>
+              <span className="text-xs text-gray-400">Locked tile</span>
+            </div>
+          </div>
+          <p className="mt-2"></p>
         </div>
       </div>
     </div>

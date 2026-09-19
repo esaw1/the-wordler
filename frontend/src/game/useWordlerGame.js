@@ -17,6 +17,7 @@ import {
 import {
   createTileModifier,
   getTileScoreMultiplier,
+  getTileScoreAdder,
   isTileLocked,
 } from '../utils/TileModifierUtils.js';
 
@@ -70,13 +71,16 @@ export function useWordlerGame() {
   const handleEnter = useCallback(() => {
     flashTile('enter');
     const wordValue = getWordValue(title);
+    const wordAdder = selected
+      .map((index) => getTileScoreAdder(tileModifiers[index]))
+      .reduce((total, adder) => total + adder, 0);
     const wordMultiplier = selected
       .map((index) => getTileScoreMultiplier(tileModifiers[index]))
       .reduce((total, multiplier) => total * multiplier, 1);
     const modifierCount = selected.filter(
       (index) => getTileScoreMultiplier(tileModifiers[index]) > 1,
     ).length;
-    const wordScore = wordValue * wordMultiplier;
+    const wordScore = (wordValue + wordAdder) * wordMultiplier;
 
     if (title.length >= 3 && dictionaryUtils(title)) {
       if (gameState) {
@@ -87,6 +91,7 @@ export function useWordlerGame() {
           value: wordScore,
           modifierCount,
           multiplier: wordMultiplier,
+          adder: wordAdder,
         }]);
         
         if (wordScore >= 6) {

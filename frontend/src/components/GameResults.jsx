@@ -78,7 +78,7 @@ export const GameResults = ({gameId, score, gameTime, wordList, showResults}) =>
             <h3 className="text-xl font-semibold border-b pb-1">TOP WORDS</h3>
             <ul className="mt-2 space-y-1">
               {leaderboard.words.length === 0 && <li className="text-gray-400">No words yet</li>}
-              {leaderboard.words.map(({word, value, multiplier, gameId: wordGameId}, index) => (
+              {leaderboard.words.map(({word, value, multiplier, adder, gameId: wordGameId}, index) => (
                 <li
                   key={`${wordGameId}-${word}-${index}`}
                   className={`leaderboard-row grid grid-cols-[1fr_auto] ${wordGameId === gameId ? 'current-run' : ''}`}
@@ -91,9 +91,12 @@ export const GameResults = ({gameId, score, gameTime, wordList, showResults}) =>
                     ))}
                   </span>
                   <span className="flex items-baseline justify-end gap-1 text-right">
-                    <span className="text-xs text-red-600">
-                      {multiplier !== undefined && multiplier !== 1 ? `(x${multiplier})` : null}
-                    </span>
+                    {adder > 0 && (
+                      <span className="text-xs text-cyan-500">(+{adder})</span>
+                    )}
+                    {multiplier > 1 && (
+                      <span className="text-xs text-red-600">(x{multiplier})</span>
+                    )}
                     <span className="text-gray-400">+{value}</span>
                   </span>
                 </li>

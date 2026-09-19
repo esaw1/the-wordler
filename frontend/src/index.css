@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Theme and base elements */
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -87,6 +88,7 @@ button:focus-visible {
   }
 }
 
+/* Flash and motion animations */
 @keyframes flash {
   0% {
     background-color: var(--flash-start);
@@ -113,6 +115,7 @@ button:focus-visible {
   animation: flash-text 0.6s ease-out;
 }
 
+/* Tiles and tile modifiers */
 .tile {
   height: 3rem;
   width: 3rem;
@@ -173,10 +176,12 @@ button:focus-visible {
   outline: 1px solid var(--tile-border-color);
   font-size: 0.65rem;
   font-weight: 600;
-  line-height: 1;  border-radius: 5%;
+  line-height: 1;
+  border-radius: 5%;
   z-index: 1;
 }
 
+/* Panels, sections, and shared labels */
 .shuffle-penalty {
   color: #e3e3e3;
 }
@@ -205,10 +210,17 @@ button:focus-visible {
   padding: 1rem;
 }
 
+.instruction-header {
+  border-bottom: 1px solid currentColor;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
 .current-run {
   background-color: rgba(99, 102, 241, 0.24);
 }
 
+/* Damage preview */
 .damage-box {
   position: relative;
   --shake-strength: 0px;
@@ -217,15 +229,28 @@ button:focus-visible {
   --shake-dir-y: 0px;
 }
 
-.damage-multiplier {
+.damage-modifiers {
   position: absolute;
   bottom: 85%;
   left: 50%;
-  color: #dc2626;
-  font-size: 0.8rem;
-  line-height: 1;
+  display: flex;
+  gap: 0.25rem;
   transform: translateX(-50%);
   white-space: nowrap;
+}
+
+.damage-multiplier,
+.damage-adder {
+  font-size: 0.8rem;
+  line-height: 1;
+}
+
+.damage-multiplier {
+  color: #d83333;
+}
+
+.damage-adder {
+  color: #31b8da;
 }
 
 @keyframes shake {
@@ -274,6 +299,7 @@ button:focus-visible {
   animation: right-fade var(--repeat-speed) ease-out;
 }
 
+/* Light color-scheme overrides */
 @media (prefers-color-scheme: light) {
   .tile {
     background-color: #d8dee3;

@@ -43,11 +43,12 @@ export const recordGame = (gameId, score, gameTime, wordList) => {
     ].sort((first, second) => second.score - first.score).slice(0, 10),
     words: [
       ...leaderboard.words,
-      ...wordList.map(({word, value, modifierCount, multiplier}) => ({
+      ...wordList.map(({word, value, modifierCount, multiplier, adder}) => ({
         word,
         value,
         modifierCount,
         multiplier,
+        adder,
         gameId,
       })),
     ].sort((first, second) => second.value - first.value).slice(0, 10),
