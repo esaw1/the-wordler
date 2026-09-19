@@ -1,8 +1,8 @@
 const X2_CHANCE = 0.03;
-const X3_CHANCE = 0.01;
+const X3_CHANCE = 0.005;
 const COLUMN_LOCK_CHANCE = 0.03;
-const PLUS1_CHANCE = 0.05;
-const PLUS2_CHANCE = 0.02;
+const PLUS1_CHANCE = 0.08;
+const PLUS2_CHANCE = 0.04;
 
 export const TILE_MODIFIER_DEFINITIONS = [
   {
